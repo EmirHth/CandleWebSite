@@ -1,0 +1,37 @@
+.app {
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* ── Cart toast notification ── */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.cart-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 24px;
+  border-radius: 8px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  z-index: 9999;
+  animation: toastIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.cart-toast--success {
+  background: rgba(18, 13, 7, 0.94);
+  color: rgba(255, 225, 172, 0.95);
+  border: 1px solid rgba(210, 160, 80, 0.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}

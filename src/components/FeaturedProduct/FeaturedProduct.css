@@ -1,0 +1,214 @@
+/* ════════════════════════════════════════════════
+   FEATURED PRODUCT SECTION
+   Viewport tam dolusu, taşma yok
+════════════════════════════════════════════════ */
+.featured {
+  background-color: #ffffff;
+  height: calc(100vh - var(--nav-h, 118px));
+  overflow: hidden;
+}
+
+/* ════════════════════════════════════════════════
+   INNER SPLIT LAYOUT  —  yüksekliği doldur
+════════════════════════════════════════════════ */
+.featured__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "media"
+    "text";
+  height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .featured__inner {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "text media";
+  }
+}
+
+@media (min-width: 1200px) {
+  .featured__inner {
+    grid-template-columns: 45fr 55fr;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   TEXT SIDE
+════════════════════════════════════════════════ */
+.featured__text {
+  grid-area: text;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 4vh, 52px) 32px;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .featured__text {
+    padding: clamp(32px, 4.5vh, 60px) 56px clamp(32px, 4.5vh, 60px) 64px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .featured__text {
+    padding: clamp(32px, 4.5vh, 60px) 72px clamp(32px, 4.5vh, 60px) 100px;
+  }
+}
+
+/* Vitrin badge */
+.featured__badge {
+  display: inline-block;
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(175, 115, 35, 0.9);
+  border: 1px solid rgba(175, 115, 35, 0.3);
+  padding: 5px 14px;
+  border-radius: 2px;
+  margin-bottom: clamp(14px, 2vh, 24px);
+  width: fit-content;
+}
+
+/* Small label */
+.featured__label {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(38, 24, 10, 0.42);
+  margin-bottom: 8px;
+}
+
+/* Giant serif product name */
+.featured__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 5vw, 68px);
+  font-weight: 300;
+  line-height: 0.95;
+  margin-bottom: clamp(10px, 1.5vh, 18px);
+  letter-spacing: -0.02em;
+}
+
+.featured__title em {
+  font-style: italic;
+  color: rgb(38, 24, 10);
+}
+
+/* Tagline */
+.featured__tagline {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(175, 115, 35, 0.7);
+  margin-bottom: clamp(14px, 2vh, 24px);
+}
+
+.featured__text::before { display: none; }
+
+/* Body description */
+.featured__description {
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(12px, 1.4vh, 14px);
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(38, 24, 10, 0.6);
+  max-width: 380px;
+  margin-bottom: clamp(14px, 2vh, 28px);
+}
+
+/* Feature list */
+.featured__details {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 clamp(18px, 2.5vh, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.featured__details li {
+  font-family: 'Jost', sans-serif;
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: rgba(38, 24, 10, 0.55);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.featured__details li span {
+  font-size: 8px;
+  color: rgba(210, 145, 55, 0.8);
+}
+
+/* CTA */
+.featured__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Jost', sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgb(38, 24, 10);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(38, 24, 10, 0.3);
+  padding-bottom: 4px;
+  width: fit-content;
+  transition: gap 0.28s ease, border-color 0.28s ease, color 0.28s ease;
+}
+
+.featured__cta:hover {
+  gap: 16px;
+  border-color: rgba(210, 145, 55, 0.7);
+  color: rgba(175, 115, 35, 0.95);
+}
+
+.featured__cta svg { transition: transform 0.28s ease; flex-shrink: 0; }
+.featured__cta:hover svg { transform: translateX(4px); }
+
+/* ════════════════════════════════════════════════
+   IMAGE SIDE
+════════════════════════════════════════════════ */
+.featured__media {
+  grid-area: media;
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+}
+
+@media (min-width: 768px) {
+  .featured__media { min-height: unset; }
+}
+
+.featured__img-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.featured__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+}
+
+/* Mobile: fixed height for image */
+@media (max-width: 767px) {
+  .featured__media {
+    height: 320px;
+    position: relative;
+  }
+}

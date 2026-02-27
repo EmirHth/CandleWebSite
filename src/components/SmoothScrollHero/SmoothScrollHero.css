@@ -1,0 +1,327 @@
+/* ════════════════════════════════════════════════
+   SMOOTH SCROLL HERO
+════════════════════════════════════════════════ */
+.ssh {
+  background-color: #09090b;
+  color: #fafafa;
+}
+
+.ssh__hero-wrap {
+  padding: 0 12px;
+}
+
+/* ── Sticky center image ── */
+.ssh__center {
+  position: sticky;
+  top: 12px;
+  z-index: 0;
+  height: 82vh;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.ssh__center-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.ssh__center-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(9, 9, 11, 0.10) 0%,
+    rgba(9, 9, 11, 0.00) 35%,
+    rgba(9, 9, 11, 0.60) 100%
+  );
+}
+
+.ssh__center-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.ssh__center-eyebrow {
+  margin-bottom: 12px;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 225, 172, 0.7);
+}
+
+/* Title — warm amber italic, not indigo */
+.ssh__center-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 7vw, 88px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 28px;
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+}
+
+.ssh__center-title em {
+  font-style: italic;
+  /* Projeyle uyumlu sıcak amber ton */
+  color: rgba(210, 160, 80, 0.95);
+}
+
+.ssh__center-sub {
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: rgba(255, 225, 172, 0.45);
+  margin: 0;
+}
+
+/* ── Parallax image grid ── */
+.ssh__parallax-wrap {
+  width: 100%;
+  padding: 180px 48px 0;
+}
+
+.ssh__parallax-img {
+  display: block;
+  border-radius: 20px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════════════
+   PARALLAX PAIRS
+   Her pair kendi justify-content değerini alır:
+   → sağ, sol, merkez, sağ — dağınık yerleşim
+════════════════════════════════════════════════ */
+.ssh__parallax-pair {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+}
+
+/* 1 — SAĞ: resim sağ kenara yaslanır, text yanında */
+.ssh__img--right-wide-pair {
+  justify-content: flex-end;
+}
+
+.ssh__img--right-wide {
+  width: 44%;
+  aspect-ratio: 4 / 3;
+  order: 2;
+}
+
+.ssh__img--right-wide-pair .ssh__img-info {
+  order: 1;
+  text-align: right;
+  align-items: flex-end;
+}
+
+/* 2 — SOL: resim sol kenara yaslanır, text yanında */
+.ssh__img--left-tall-pair {
+  margin-top: 100px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.ssh__img--left-tall {
+  width: 28%;
+  aspect-ratio: 3 / 5;
+  order: 1;
+}
+
+.ssh__img--left-tall-pair .ssh__img-info {
+  order: 2;
+  padding-top: 48px;
+}
+
+/* 3 — MERKEZ: resim + text birlikte ortalanır */
+.ssh__img--center-wide-pair {
+  margin-top: 100px;
+  justify-content: center;
+}
+
+.ssh__img--center-wide {
+  width: 42%;
+  aspect-ratio: 4 / 3;
+  order: 1;
+}
+
+.ssh__img--center-wide-pair .ssh__img-info {
+  order: 2;
+}
+
+/* 4 — SAĞ: resim sağ kenara yaslanır */
+.ssh__img--right-tall-pair {
+  margin-top: 100px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.ssh__img--right-tall {
+  width: 26%;
+  aspect-ratio: 2 / 3;
+  order: 2;
+}
+
+.ssh__img--right-tall-pair .ssh__img-info {
+  order: 1;
+  text-align: right;
+  align-items: flex-end;
+}
+
+/* ── Info text (shared) ── */
+.ssh__img-info {
+  flex: 0 0 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.ssh__img-info-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(210, 160, 80, 0.7);
+}
+
+.ssh__img-info-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3.2vw, 46px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  white-space: pre-line;
+}
+
+.ssh__img-info-sub {
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(210, 160, 80, 0.65);
+  margin: 0;
+}
+
+.ssh__img-info-desc {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(255, 225, 172, 0.40);
+  margin: 0;
+  max-width: 360px;
+}
+
+/* ── Mobile: dikey sırala ── */
+@media (max-width: 640px) {
+  .ssh__parallax-pair {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ssh__img--right-wide,
+  .ssh__img--left-tall,
+  .ssh__img--center-wide,
+  .ssh__img--right-tall {
+    width: 100%;
+    order: 1 !important;
+  }
+
+  .ssh__img--left-tall,
+  .ssh__img--right-tall { aspect-ratio: 4 / 3; }
+
+  .ssh__img-info {
+    order: 2 !important;
+    text-align: left !important;
+    align-items: flex-start !important;
+    padding-top: 0 !important;
+  }
+
+  .ssh__img--right-tall-pair { width: 100%; margin-left: 0; }
+}
+
+/* ════════════════════════════════════════════════
+   FAQ SECTION  (= Schedule rows)
+════════════════════════════════════════════════ */
+.ssh__faq {
+  margin: 0 auto;
+  max-width: 64rem;
+  padding: 160px 16px;
+}
+
+.ssh__faq-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #fafafa;
+  margin: 0 0 80px;
+}
+
+.ssh__faq-row {
+  margin-bottom: 36px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid #27272a;
+  padding: 0 12px 36px;
+}
+
+.ssh__faq-left {
+  flex: 1;
+}
+
+.ssh__faq-question {
+  font-family: 'Jost', sans-serif;
+  font-size: clamp(16px, 1.8vw, 20px);
+  font-weight: 400;
+  color: #fafafa;
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.ssh__faq-category {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #71717a;
+  margin: 0;
+}
+
+.ssh__faq-detail {
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #71717a;
+  margin: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
+  align-self: center;
+}

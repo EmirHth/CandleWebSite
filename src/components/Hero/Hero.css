@@ -1,0 +1,399 @@
+/* ════════════════════════════════════════════════
+   HERO SECTION
+   Fixed header: announcement(46px) + navbar(64px) = 110px mobile
+                 announcement(46px) + navbar(72px) = 118px desktop
+════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 74vh;
+  min-height: 540px;
+  max-height: 800px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  /* Generous padding-top so text always clears the fixed header
+     (announcement 46px + navbar 64px = 110px) + 44px breathing room */
+  padding-top: 154px;
+}
+
+@media (min-width: 1000px) {
+  .hero {
+    height: 74vh;
+    min-height: 560px;
+    /* announcement 46px + navbar 72px = 118px + 50px breathing room */
+    padding-top: 168px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .hero {
+    height: 76vh;
+    max-height: 820px;
+  }
+}
+
+
+/* ════════════════════════════════════════════════
+   BACKGROUND IMAGE  + OVERLAY
+════════════════════════════════════════════════ */
+.hero__media {
+  position: absolute;
+  inset: 0;
+
+  /* heroReveal – initial state */
+  opacity: 0;
+  transform: scale(1.06);
+  transition:
+    opacity  1.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 2.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* revealed state triggered by JS */
+.hero--revealed .hero__media {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 65% center; /* keep candle in frame */
+  display: block;
+}
+
+/* Multi-stop gradient:
+   - strong dark left  → text readability
+   - transparent right → lets the product image breathe           */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(10, 8, 6, 0.82)  0%,
+    rgba(10, 8, 6, 0.58) 38%,
+    rgba(10, 8, 6, 0.22) 62%,
+    rgba(10, 8, 6, 0.08) 100%
+  );
+}
+
+/* On small screens, darken uniformly */
+@media (max-width: 640px) {
+  .hero__overlay {
+    background: rgba(10, 8, 6, 0.58);
+  }
+  .hero__image {
+    object-position: 55% center;
+  }
+}
+
+
+/* ════════════════════════════════════════════════
+   CONTENT BLOCK
+════════════════════════════════════════════════ */
+.hero__content {
+  position: relative;
+  z-index: 2;
+  padding: 0 28px;
+  max-width: 620px;
+
+  /* heroReveal content – initial */
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity   1s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero__content--revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (min-width: 640px) {
+  .hero__content {
+    padding: 0 56px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .hero__content {
+    padding: 0 80px;
+    max-width: 680px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero__content {
+    padding: 0 100px;
+    max-width: 720px;
+  }
+}
+
+
+/* ════════════════════════════════════════════════
+   EYEBROW
+════════════════════════════════════════════════ */
+.hero__eyebrow {
+  display: block;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(245, 225, 190, 0.8);
+  margin-bottom: 18px;
+}
+
+@media (min-width: 768px) {
+  .hero__eyebrow {
+    font-size: 11px;
+  }
+}
+
+
+/* ════════════════════════════════════════════════
+   HEADLINE
+════════════════════════════════════════════════ */
+.hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 54px;
+  font-weight: 300;
+  line-height: 1.08;
+  color: #ffffff;
+  margin-bottom: 22px;
+  letter-spacing: -0.01em;
+  /* Rich text shadow for depth */
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.45),
+    0 1px  4px rgba(0, 0, 0, 0.3);
+}
+
+.hero__title em {
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(255, 228, 180, 0.92);
+}
+
+@media (min-width: 768px) {
+  .hero__title {
+    font-size: 68px;
+    margin-bottom: 26px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .hero__title {
+    font-size: 78px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .hero__title {
+    font-size: 88px;
+  }
+}
+
+
+/* ════════════════════════════════════════════════
+   SUBTITLE
+════════════════════════════════════════════════ */
+.hero__subtitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(245, 238, 225, 0.82);
+  margin-bottom: 36px;
+  max-width: 420px;
+}
+
+@media (min-width: 768px) {
+  .hero__subtitle {
+    font-size: 16px;
+    margin-bottom: 44px;
+  }
+}
+
+/* Only show line break on larger screens */
+.hero__br {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .hero__br {
+    display: block;
+  }
+}
+
+
+/* ════════════════════════════════════════════════
+   CTA BUTTONS
+════════════════════════════════════════════════ */
+.hero__cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Jost', sans-serif;
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Primary – filled on hover */
+.hero__cta--primary {
+  padding: 14px 34px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.hero__cta--primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #ffffff;
+  transform: translateX(-101%);
+  transition: transform 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.hero__cta--primary:hover {
+  color: rgb(34, 34, 34);
+  border-color: #ffffff;
+}
+
+.hero__cta--primary:hover::before {
+  transform: translateX(0);
+}
+
+.hero__cta--primary span,
+.hero__cta--primary .hero__cta-arrow {
+  position: relative;
+  z-index: 1;
+}
+
+.hero__cta-arrow {
+  transition: transform 0.28s ease;
+  flex-shrink: 0;
+}
+
+.hero__cta--primary:hover .hero__cta-arrow {
+  transform: translateX(4px);
+}
+
+/* Secondary – text link */
+.hero__cta--secondary {
+  padding: 14px 4px;
+  background: none;
+  border: none;
+  color: rgba(245, 238, 225, 0.75);
+  border-bottom: 1px solid rgba(245, 238, 225, 0.3);
+  letter-spacing: 0.22em;
+  font-size: 10px;
+}
+
+.hero__cta--secondary:hover {
+  color: #ffffff;
+  border-bottom-color: rgba(255, 255, 255, 0.7);
+}
+
+
+/* ════════════════════════════════════════════════
+   TRUST BADGES
+════════════════════════════════════════════════ */
+.hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.hero__badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 225, 185, 0.65);
+}
+
+.hero__badge-icon {
+  font-size: 7px;
+  color: rgba(245, 200, 130, 0.7);
+}
+
+
+/* ════════════════════════════════════════════════
+   SCROLL CUE
+════════════════════════════════════════════════ */
+.hero__scroll-cue {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  opacity: 0;
+  animation: scrollCueFadeIn 1s ease 2.2s forwards;
+}
+
+@keyframes scrollCueFadeIn {
+  to { opacity: 1; }
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.5)
+  );
+  animation: scrollLineDrop 1.6s ease-in-out 2.5s infinite;
+}
+
+@keyframes scrollLineDrop {
+  0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+  50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  51%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+.hero__scroll-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Hide scroll cue on very small screens */
+@media (max-width: 480px) {
+  .hero__scroll-cue {
+    display: none;
+  }
+}

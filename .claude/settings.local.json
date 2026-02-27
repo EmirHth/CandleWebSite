@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.candledelirium.com)",
+      "Bash(node:*)",
+      "Bash(cd \"C:/Users/emirh/OneDrive/Desktop/Candle\" && npm install 2>&1)",
+      "Bash(cd \"C:/Users/emirh/OneDrive/Desktop/Candle\" && npm run build 2>&1)",
+      "Bash(cd:*)",
+      "WebFetch(domain:reactbits.dev)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(tail:*)",
+      "WebFetch(domain:lightswind.com)",
+      "WebFetch(domain:www.hover.dev)",
+      "WebFetch(domain:hover.dev)",
+      "WebFetch(domain:motion.dev)",
+      "WebFetch(domain:blog.olivierlarose.com)",
+      "WebFetch(domain:webcache.googleusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:blog.parther.in)",
+      "WebFetch(domain:allutilitycss.com)",
+      "Bash(pkill:*)",
+      "Bash(cd C:\\\\Users\\\\emirh\\\\OneDrive\\\\Desktop\\\\Candle:*)",
+      "Bash(head:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}

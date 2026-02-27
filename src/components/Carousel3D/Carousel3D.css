@@ -1,0 +1,270 @@
+/* ════════════════════════════════════════════════
+   3D CAROUSEL SECTION
+   Black background, stage-light effect on center card
+════════════════════════════════════════════════ */
+
+/* margin-top creates white breathing room before the black section */
+.c3d {
+  background-color: #000000;
+  height: calc(100vh - var(--nav-h, 118px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
+/* ════════════════════════════════════════════════
+   SECTION HEADER
+════════════════════════════════════════════════ */
+.c3d__header {
+  text-align: center;
+  padding: clamp(20px, 3.5vh, 44px) 24px clamp(10px, 1.5vh, 20px);
+  flex-shrink: 0;
+}
+
+.c3d__eyebrow {
+  display: block;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: rgba(255, 210, 110, 0.60);
+  margin-bottom: 16px;
+}
+
+.c3d__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  line-height: 1.15;
+  color: rgba(255, 248, 232, 0.90);
+  letter-spacing: -0.01em;
+}
+
+.c3d__title em {
+  font-style: italic;
+  color: rgba(255, 208, 90, 0.88);
+}
+
+
+/* ════════════════════════════════════════════════
+   3-D STAGE
+   perspective here so all cards share one vanishing point
+════════════════════════════════════════════════ */
+.c3d__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+
+/* ════════════════════════════════════════════════
+   CARD
+════════════════════════════════════════════════ */
+.c3d__card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(180px, 19vw, 300px);
+  height: clamp(240px, 26vw, 400px);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.72s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   0.52s ease,
+    box-shadow 0.52s ease;
+}
+
+.c3d__card--active {
+  cursor: default;
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.95),
+    0  0    0 1px rgba(255, 220, 130, 0.18),
+    0  0   80px rgba(255, 195, 80, 0.08);
+}
+
+
+/* ── Card image ── */
+.c3d__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  filter: brightness(0.75) saturate(0.88);
+  transition: filter 0.52s ease;
+}
+
+.c3d__card--active .c3d__img {
+  filter: brightness(1) saturate(1);
+}
+
+
+/* ════════════════════════════════════════════════
+   SPOTLIGHT  –  stage / plot light from above
+   Positioned above the card's top edge; the radial
+   gradient fans down like a warm amber cone.
+════════════════════════════════════════════════ */
+.c3d__spotlight {
+  position: absolute;
+  top: -130px;        /* start above the card */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 320px;      /* reaches ~190px into the card */
+  pointer-events: none;
+  z-index: 20;
+  /* Primary cone: tight warm beam */
+  background: radial-gradient(
+    ellipse 110px 300px at 50% 0%,
+    rgba(255, 240, 185, 0.50) 0%,
+    rgba(255, 225, 150, 0.22) 35%,
+    rgba(255, 210, 120, 0.06) 60%,
+    transparent 78%
+  );
+}
+
+/* Secondary wider fill light */
+.c3d__spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 200px 240px at 50% 0%,
+    rgba(255, 230, 160, 0.12) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+
+/* ════════════════════════════════════════════════
+   CHROMA LIGHT  –  follows mouse (GSAP quickSetter)
+   --x / --y set in JS; defaults to card center
+════════════════════════════════════════════════ */
+.c3d__chroma {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 15;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle 200px at var(--x, 50%) var(--y, 50%),
+    rgba(255, 210, 115, 0.26) 0%,
+    rgba(255, 185, 70, 0.10)  40%,
+    transparent               65%
+  );
+}
+
+
+/* ════════════════════════════════════════════════
+   CARD LABEL  –  fades in on active card
+════════════════════════════════════════════════ */
+.c3d__label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 36px 20px 22px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.30) 52%,
+    transparent         100%
+  );
+  pointer-events: none;
+  z-index: 25;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.38s ease, transform 0.38s ease;
+}
+
+.c3d__card--active .c3d__label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.c3d__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: rgba(255, 248, 228, 0.96);
+  letter-spacing: 0.02em;
+  margin-bottom: 5px;
+}
+
+.c3d__sub {
+  font-family: 'Jost', sans-serif;
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 210, 110, 0.72);
+}
+
+
+/* ════════════════════════════════════════════════
+   NAVIGATION CONTROLS
+════════════════════════════════════════════════ */
+.c3d__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: clamp(10px, 1.8vh, 22px) 0 clamp(12px, 2vh, 28px);
+  flex-shrink: 0;
+}
+
+.c3d__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    border-color  0.22s ease,
+    color         0.22s ease,
+    background-color 0.22s ease;
+}
+
+.c3d__btn:hover {
+  border-color: rgba(255, 210, 110, 0.50);
+  color: rgba(255, 210, 110, 0.90);
+  background-color: rgba(255, 210, 110, 0.06);
+}
+
+.c3d__dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.c3d__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  transition: background-color 0.26s ease, transform 0.26s ease;
+}
+
+.c3d__dot--on {
+  background-color: rgba(255, 210, 110, 0.90);
+  transform: scale(1.5);
+}
