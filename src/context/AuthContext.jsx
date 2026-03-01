@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import { logActivity, LOG_TYPES } from '../utils/activityLogger'
 
 const AuthContext = createContext(null)
 
@@ -96,6 +97,11 @@ export function AuthProvider({ children }) {
     }
     const { password: _, ...safeUser } = found
     setUser(safeUser)
+    logActivity(LOG_TYPES.LOGIN, {
+      email: safeUser.email,
+      fullName: `${safeUser.firstName} ${safeUser.lastName}`,
+      role: safeUser.role,
+    }, safeUser.id)
     return { success: true, user: safeUser }
   }, [])
 
@@ -118,6 +124,10 @@ export function AuthProvider({ children }) {
     localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(updated))
     const { password: _, ...safeUser } = newUser
     setUser(safeUser)
+    logActivity(LOG_TYPES.REGISTER, {
+      email: safeUser.email,
+      fullName: `${firstName} ${lastName}`,
+    }, safeUser.id)
     return { success: true, user: safeUser }
   }, [])
 

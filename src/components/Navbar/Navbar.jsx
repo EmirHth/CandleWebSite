@@ -6,46 +6,57 @@ import './Navbar.css'
 
 /* ─── Navigation data ─── */
 const NAV_ITEMS = [
-  { label: 'YENİ', href: '#' },
-  { label: 'ÇOK SATANLAR', href: '#' },
+  { label: 'YENİ', href: '/lansman' },
+  { label: 'ÇOK SATANLAR', href: '/urunler' },
   {
-    label: 'MARKALAR',
-    href: '#',
+    label: 'KATEGORİ',
+    href: '/kategori',
     wide: true,
-    viewAll: 'Tüm Markaları Gör',
+    rightImage: '/images/gece-mumu.jpg',
+    viewAll: 'Tüm Kategorileri Gör',
     dropdown: [
-      'Akamuti', 'Annabel Trends', 'Aromatique', 'Bahoma', 'Botanica',
-      'Cote Noire', 'D.L. & Co.', 'Glasshouse', 'Illume', 'La Jolie Muse',
-      'Maison Margiela', 'Nest', 'Paddywax', 'Voluspa', 'Woodwick',
+      { label: 'Soy Mumlar',          href: '/kategori/soy-mumlar' },
+      { label: 'Balmumu Mumlar',       href: '/kategori/balmumu-mumlar' },
+      { label: 'Masaj Mumları',        href: '/kategori/masaj-mumlari' },
+      { label: 'Koleksiyon Setleri',   href: '/kategori/koleksiyon-setleri' },
+      { label: 'Difüzörler',           href: '/kategori/difuzorler' },
+      { label: 'Mumluklar',            href: '/kategori/mumluklar' },
+      { label: 'Oda Spreyleri',        href: '/kategori/oda-spreyleri' },
+      { label: 'Sabunlar & Losyonlar', href: '/kategori/sabunlar-losyonlar' },
     ],
   },
   {
     label: 'KOKULAR',
-    href: '#',
+    href: '/kokular',
+    wide: true,
+    rightImage: '/images/deniz-mumu.jpg',
     viewAll: 'Tüm Kokuları Gör',
     dropdown: [
-      'Ahşap & Toprak', 'Amber & Reçine', 'Aquatik & Deniz',
-      'Baharat & Oryantal', 'Çiçek & Botanik', 'Meyveli & Tatlı',
-      'Misk & Pudra', 'Sedir & Yeşil', 'Temiz & Ferah', 'Vanilya & Kremsi',
-    ],
-  },
-  {
-    label: 'ÜRÜNLER',
-    href: '/urunler',
-    viewAll: 'Tüm Ürünleri Gör',
-    dropdown: [
-      'Soy Mumlar', 'Balmumu Mumlar', 'Masaj Mumları',
-      'Mum Bakım Seti', 'Mumluklar', 'Oda Spreyleri',
-      'Difüzörler', 'Sabunlar & Losyonlar',
+      { label: 'Ahşap & Toprak',    href: '/kokular/ahsap-toprak' },
+      { label: 'Amber & Reçine',    href: '/kokular/amber-recine' },
+      { label: 'Aquatik & Deniz',   href: '/kokular/aquatik-deniz' },
+      { label: 'Baharat & Oryantal',href: '/kokular/baharat-oryantal' },
+      { label: 'Çiçek & Botanik',   href: '/kokular/cicek-botanik' },
+      { label: 'Meyveli & Tatlı',   href: '/kokular/meyveli-tatli' },
+      { label: 'Misk & Pudra',      href: '/kokular/misk-pudra' },
+      { label: 'Sedir & Yeşil',     href: '/kokular/sedir-yesil' },
+      { label: 'Temiz & Ferah',     href: '/kokular/temiz-ferah' },
+      { label: 'Vanilya & Kremsi',  href: '/kokular/vanilya-kremsi' },
     ],
   },
   {
     label: 'MEVSİMLER',
-    href: '#',
+    href: '/mevsimler',
     viewAll: 'Mevsimsel Koleksiyonlar',
-    dropdown: ['İlkbahar', 'Yaz', 'Sonbahar', 'Kış', 'Yılbaşı & Bayram'],
+    dropdown: [
+      { label: 'İlkbahar',        href: '/mevsimler/ilkbahar' },
+      { label: 'Yaz',             href: '/mevsimler/yaz' },
+      { label: 'Sonbahar',        href: '/mevsimler/sonbahar' },
+      { label: 'Kış',             href: '/mevsimler/kis' },
+      { label: 'Yılbaşı & Bayram',href: '/mevsimler/yilbasi-bayram' },
+    ],
   },
-  { label: 'HEDİYE FİKİRLERİ', href: '#' },
+  { label: 'HEDİYE FİKİRLERİ', href: '/hediye' },
 ]
 
 /* ─── Icon components ─── */
@@ -115,8 +126,10 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const [searchOpen, setSearchOpen]         = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState(null)
+  const [userMenuOpen, setUserMenuOpen]     = useState(false)
 
   const dropdownTimer  = useRef(null)
+  const userMenuRef    = useRef(null)
   const searchInputRef = useRef(null)
 
   /* Compute whether the navbar bg should be white */
@@ -127,6 +140,17 @@ export default function Navbar() {
     const onScroll = () => setIsScrolled(window.scrollY > 8)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  /* ── close user menu on outside click ── */
+  useEffect(() => {
+    const handler = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
   }, [])
 
   /* ── lock body scroll when mobile menu open ── */
@@ -225,41 +249,76 @@ export default function Navbar() {
                     {/* Dropdown panel */}
                     {item.dropdown && (
                       <div
-                        className={`navbar__dropdown ${item.wide ? 'navbar__dropdown--wide' : ''} ${activeDropdown === item.label ? 'navbar__dropdown--open' : ''}`}
+                        className={`navbar__dropdown ${item.wide ? 'navbar__dropdown--wide' : ''} ${item.rightImage ? 'navbar__dropdown--img' : ''} ${activeDropdown === item.label ? 'navbar__dropdown--open' : ''}`}
                         onMouseEnter={keepDropdown}
                         onMouseLeave={closeDropdown}
                         role="menu"
                         aria-label={item.label}
                       >
-                        {/* Dropdown header */}
-                        <div className="navbar__dropdown-heading">
-                          <span className="navbar__dropdown-heading-label">{item.label}</span>
-                          <span className="navbar__dropdown-heading-line" />
-                        </div>
-
-                        {/* Items grid */}
-                        <ul className={`navbar__dropdown-list ${item.wide ? 'navbar__dropdown-list--grid' : ''}`}>
-                          {item.dropdown.map((sub) => (
-                            <li key={sub} role="none">
-                              <a href="#" className="navbar__dropdown-link" role="menuitem">
-                                <span className="navbar__dropdown-arrow" aria-hidden="true">→</span>
-                                {sub}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-
-                        {/* View all footer */}
-                        {item.viewAll && (
-                          <div className="navbar__dropdown-footer">
-                            <a href="#" className="navbar__dropdown-viewall">
-                              {item.viewAll}
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                              </svg>
-                            </a>
+                        {item.rightImage ? (
+                          /* ── Split layout: links left, image right ── */
+                          <div className="navbar__dropdown-split">
+                            <div className="navbar__dropdown-split__content">
+                              <div className="navbar__dropdown-heading">
+                                <span className="navbar__dropdown-heading-label">{item.label}</span>
+                                <span className="navbar__dropdown-heading-line" />
+                              </div>
+                              <ul className={`navbar__dropdown-list ${item.wide ? 'navbar__dropdown-list--grid' : ''}`}>
+                                {item.dropdown.map((sub) => (
+                                  <li key={sub.href} role="none">
+                                    <Link to={sub.href} className="navbar__dropdown-link" role="menuitem">
+                                      <span className="navbar__dropdown-arrow" aria-hidden="true">→</span>
+                                      {sub.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                              {item.viewAll && (
+                                <div className="navbar__dropdown-footer">
+                                  <a href={item.href} className="navbar__dropdown-viewall">
+                                    {item.viewAll}
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                      stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                      <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                            <div className="navbar__dropdown-split__img">
+                              <img src={item.rightImage} alt="" draggable="false" />
+                              <div className="navbar__dropdown-split__img-overlay" />
+                            </div>
                           </div>
+                        ) : (
+                          /* ── Standard layout ── */
+                          <>
+                            <div className="navbar__dropdown-heading">
+                              <span className="navbar__dropdown-heading-label">{item.label}</span>
+                              <span className="navbar__dropdown-heading-line" />
+                            </div>
+                            <ul className={`navbar__dropdown-list ${item.wide ? 'navbar__dropdown-list--grid' : ''}`}>
+                              {item.dropdown.map((sub) => (
+                                <li key={sub.href} role="none">
+                                  <Link to={sub.href} className="navbar__dropdown-link" role="menuitem">
+                                    <span className="navbar__dropdown-arrow" aria-hidden="true">→</span>
+                                    {sub.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                            {item.viewAll && (
+                              <div className="navbar__dropdown-footer">
+                                <a href="#" className="navbar__dropdown-viewall">
+                                  {item.viewAll}
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                  </svg>
+                                </a>
+                              </div>
+                            )}
+                          </>
                         )}
                       </div>
                     )}
@@ -278,9 +337,25 @@ export default function Navbar() {
               >
                 <SearchIcon />
               </button>
+              {isAuthenticated && !isAdmin && (
+                <button
+                  className="icon-btn"
+                  onClick={() => navigate('/siparislerim')}
+                  aria-label="Siparişlerim"
+                  title="Siparişlerim"
+                >
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                    <rect x="9" y="3" width="6" height="4" rx="1"/>
+                    <line x1="9" y1="12" x2="15" y2="12"/>
+                    <line x1="9" y1="16" x2="11" y2="16"/>
+                  </svg>
+                </button>
+              )}
               {isAuthenticated ? (
-                <div className="navbar__account-wrap">
+                <div className="navbar__account-wrap" ref={userMenuRef}>
                   {isAdmin ? (
+                    /* Admin: grid icon → admin panel */
                     <button className="icon-btn navbar__admin-btn" aria-label="Admin Panel" onClick={() => navigate('/admin')}>
                       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -290,22 +365,64 @@ export default function Navbar() {
                       </svg>
                     </button>
                   ) : (
-                    <button className="icon-btn" aria-label="Profilim" onClick={() => navigate('/profil')}>
-                      <AccountIcon />
+                    /* User: account icon with dropdown */
+                    <div className="navbar__user-menu-wrap">
+                      <button
+                        className="icon-btn navbar__user-trigger"
+                        aria-label="Hesabım"
+                        aria-expanded={userMenuOpen}
+                        onClick={() => setUserMenuOpen(v => !v)}
+                      >
+                        <AccountIcon />
+                      </button>
+                      {userMenuOpen && (
+                        <div className="navbar__user-dropdown">
+                          <div className="navbar__user-dropdown__name">
+                            {user?.firstName} {user?.lastName}
+                          </div>
+                          <button className="navbar__user-dropdown__item" onClick={() => { navigate('/siparislerim'); setUserMenuOpen(false) }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                              <line x1="3" y1="6" x2="21" y2="6"/>
+                              <path d="M16 10a4 4 0 0 1-8 0"/>
+                            </svg>
+                            Siparişlerim
+                          </button>
+                          <button className="navbar__user-dropdown__item" onClick={() => { navigate('/profil'); setUserMenuOpen(false) }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                              <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            Profilim
+                          </button>
+                          <div className="navbar__user-dropdown__divider" />
+                          <button className="navbar__user-dropdown__item navbar__user-dropdown__item--danger" onClick={() => { logout(); navigate('/'); setUserMenuOpen(false) }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                              <polyline points="16 17 21 12 16 7"/>
+                              <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            Çıkış Yap
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {/* Admin also gets logout */}
+                  {isAdmin && (
+                    <button
+                      className="icon-btn navbar__logout-btn"
+                      aria-label="Çıkış Yap"
+                      onClick={() => { logout(); navigate('/') }}
+                      title="Çıkış Yap"
+                    >
+                      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                      </svg>
                     </button>
                   )}
-                  <button
-                    className="icon-btn navbar__logout-btn"
-                    aria-label="Çıkış Yap"
-                    onClick={() => { logout(); navigate('/') }}
-                    title="Çıkış Yap"
-                  >
-                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                      <polyline points="16 17 21 12 16 7" />
-                      <line x1="21" y1="12" x2="9" y2="12" />
-                    </svg>
-                  </button>
                 </div>
               ) : (
                 <button className="icon-btn" aria-label="Giriş Yap" onClick={() => navigate('/login')}>
@@ -405,15 +522,17 @@ export default function Navbar() {
                       style={{ maxHeight: mobileExpanded === item.label ? `${item.dropdown.length * 48}px` : '0px' }}
                     >
                       {item.dropdown.map((sub) => (
-                        <li key={sub}>
-                          <a href="#" className="mobile-menu__sub-link">{sub}</a>
+                        <li key={sub.href}>
+                          <Link to={sub.href} className="mobile-menu__sub-link" onClick={() => setMobileOpen(false)}>
+                            {sub.label}
+                          </Link>
                         </li>
                       ))}
                       {item.viewAll && (
                         <li>
-                          <a href="#" className="mobile-menu__sub-link mobile-menu__sub-link--viewall">
+                          <Link to={item.href} className="mobile-menu__sub-link mobile-menu__sub-link--viewall" onClick={() => setMobileOpen(false)}>
                             {item.viewAll} →
-                          </a>
+                          </Link>
                         </li>
                       )}
                     </ul>
@@ -427,7 +546,15 @@ export default function Navbar() {
         </nav>
 
         <footer className="mobile-menu__footer">
-          <a href="#" className="mobile-menu__footer-link">Hesabım</a>
+          {isAuthenticated && !isAdmin && (
+            <button className="mobile-menu__footer-link" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', textAlign: 'left' }} onClick={() => { setMobileOpen(false); navigate('/siparislerim') }}>Siparişlerim</button>
+          )}
+          {isAuthenticated && !isAdmin && (
+            <button className="mobile-menu__footer-link" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', textAlign: 'left' }} onClick={() => { setMobileOpen(false); navigate('/profil') }}>Hesabım</button>
+          )}
+          {!isAuthenticated && (
+            <button className="mobile-menu__footer-link" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', textAlign: 'left' }} onClick={() => { setMobileOpen(false); navigate('/login') }}>Giriş Yap</button>
+          )}
           <a href="#" className="mobile-menu__footer-link">Hakkımızda</a>
           <a href="#" className="mobile-menu__footer-link">İletişim</a>
           <a href="#" className="mobile-menu__footer-link">Yardım</a>

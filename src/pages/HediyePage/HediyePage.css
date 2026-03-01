@@ -714,47 +714,12 @@
   justify-content: center;
 }
 
-.hediye-card-visual__card {
-  width: 280px;
-  height: 168px;
+.hediye-card-visual__img {
+  width: 320px;
+  max-width: 100%;
   border-radius: 16px;
-  background: linear-gradient(135deg, rgba(210, 160, 80, 0.18) 0%, rgba(120, 70, 20, 0.3) 100%);
-  border: 1px solid rgba(210, 160, 80, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hediye-card-visual__card::before {
-  content: '';
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: rgba(210, 160, 80, 0.06);
-  pointer-events: none;
-}
-
-.hediye-card-visual__logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: rgba(210, 160, 80, 0.9);
-  letter-spacing: 0.06em;
-}
-
-.hediye-card-visual__amount {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 32px;
-  font-weight: 300;
-  color: rgba(255, 248, 232, 0.9);
-  align-self: flex-end;
+  object-fit: cover;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(210, 160, 80, 0.15);
 }
 
 /* Card body */

@@ -502,6 +502,66 @@
   background: rgba(255, 215, 100, 0.18);
 }
 
+/* ── Mobile ── */
+@media (max-width: 500px) {
+  .sip-page {
+    padding: 120px 0 60px;
+  }
+
+  .sip-container {
+    padding: 0 16px;
+  }
+
+  .sip-header__title {
+    font-size: 2rem;
+  }
+
+  /* Sipariş header'ı: küçük ekranda 2 satıra böl */
+  .sip-order__header {
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .sip-order__left {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+
+  .sip-order__thumbs {
+    order: 3;
+  }
+
+  .sip-order__right {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+
+  .sip-order__chevron {
+    margin-left: auto;
+  }
+
+  .sip-order__detail {
+    padding: 16px 16px 14px;
+  }
+
+  .sip-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .sip-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sip-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
 /* ── Print Styles (Dekont) ── */
 @media print {
   body * { visibility: hidden !important; }

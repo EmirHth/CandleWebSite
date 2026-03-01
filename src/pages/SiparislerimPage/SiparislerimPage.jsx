@@ -258,11 +258,162 @@ const FILTER_TABS = [
   { key: 'İptal', label: 'İptal' },
 ]
 
+const CARRIER_URLS = {
+  'MNG': 'https://www.mngkargo.com.tr/wps/portal/mngkargo/takip',
+  'Yurtiçi': 'https://www.yurticikargo.com/tr/online-servisler/gonderi-sorgula',
+  'Aras': 'https://www.araskargo.com.tr/arastir/kargo-takip',
+  'PTT': 'https://www.ptt.gov.tr/tr/ptt-kargo-takip',
+  'UPS': 'https://www.ups.com/track',
+  'Sürat': 'https://www.suratkargo.com.tr',
+}
+
+function KargoTakipModal({ order, onClose }) {
+  const TRACKING_STEPS = [
+    { label: 'Sipariş Alındı', done: true },
+    { label: 'Paketleme & Hazırlık', done: order.status !== 'İptal' },
+    { label: 'Kargo Şubesine Teslim', done: order.status === 'Kargoda' || order.status === 'Teslim Edildi' },
+    { label: 'Dağıtıma Çıktı', done: order.status === 'Kargoda' || order.status === 'Teslim Edildi' },
+    { label: 'Teslim Edildi', done: order.status === 'Teslim Edildi' },
+  ]
+  const carrierUrl = CARRIER_URLS[order.carrier]
+
+  return (
+    <div
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+      onClick={onClose}
+    >
+      <div
+        style={{ background: '#0f0f11', border: '1px solid rgba(255,215,100,0.15)', borderRadius: 16, width: '100%', maxWidth: 480, maxHeight: '90vh', overflowY: 'auto' }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div style={{ padding: '22px 24px 18px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 8, background: 'rgba(255,215,100,0.08)', border: '1px solid rgba(255,215,100,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,215,100,0.7)" strokeWidth="1.8" strokeLinecap="round">
+                  <rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+                </svg>
+              </div>
+              <div>
+                <p style={{ fontSize: '0.95rem', fontWeight: 700, color: '#f0ebe0', fontFamily: 'Jost,sans-serif', margin: 0 }}>Kargo Takip</p>
+                <p style={{ fontSize: '0.72rem', color: 'rgba(240,235,224,0.4)', fontFamily: 'Jost,sans-serif', margin: 0 }}>{order.carrier || 'Kargo Firması'}</p>
+              </div>
+            </div>
+            <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'rgba(240,235,224,0.4)', cursor: 'pointer', padding: 4, lineHeight: 1 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          {/* Tracking number */}
+          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 8, padding: '10px 14px' }}>
+            <p style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(240,235,224,0.35)', fontFamily: 'Jost,sans-serif', margin: '0 0 4px' }}>Takip Numarası</p>
+            <p style={{ fontSize: '0.92rem', fontWeight: 700, fontFamily: 'monospace', color: 'rgba(255,215,100,0.85)', margin: 0, letterSpacing: '0.04em' }}>{order.trackingNo || '—'}</p>
+          </div>
+        </div>
+
+        {/* Tracking timeline */}
+        <div style={{ padding: '20px 24px' }}>
+          <p style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(240,235,224,0.35)', fontFamily: 'Jost,sans-serif', margin: '0 0 16px' }}>Kargo Durumu</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            {TRACKING_STEPS.map((step, i) => {
+              const isLast = i === TRACKING_STEPS.length - 1
+              const isCurrent = step.done && (isLast || !TRACKING_STEPS[i + 1]?.done)
+              return (
+                <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', paddingBottom: isLast ? 0 : 0 }}>
+                  {/* dot + line */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                    <div style={{
+                      width: 24, height: 24, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: step.done ? (isCurrent ? 'rgba(255,215,100,0.15)' : 'rgba(255,215,100,0.08)') : 'rgba(255,255,255,0.04)',
+                      border: `2px solid ${step.done ? (isCurrent ? 'rgba(255,215,100,0.7)' : 'rgba(255,215,100,0.3)') : 'rgba(255,255,255,0.1)'}`,
+                      flexShrink: 0,
+                    }}>
+                      {step.done && (
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={isCurrent ? 'rgba(255,215,100,0.9)' : 'rgba(255,215,100,0.5)'} strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      )}
+                    </div>
+                    {!isLast && (
+                      <div style={{ width: 2, height: 28, background: step.done ? 'rgba(255,215,100,0.2)' : 'rgba(255,255,255,0.06)', margin: '2px 0' }} />
+                    )}
+                  </div>
+                  {/* label */}
+                  <div style={{ paddingTop: 3, paddingBottom: isLast ? 0 : 28 }}>
+                    <p style={{
+                      fontSize: '0.82rem', fontWeight: isCurrent ? 700 : 500,
+                      color: step.done ? (isCurrent ? '#f0ebe0' : 'rgba(240,235,224,0.6)') : 'rgba(240,235,224,0.25)',
+                      fontFamily: 'Jost,sans-serif', margin: 0,
+                    }}>{step.label}</p>
+                    {isCurrent && order.status === 'Kargoda' && (
+                      <p style={{ fontSize: '0.7rem', color: 'rgba(255,215,100,0.6)', fontFamily: 'Jost,sans-serif', margin: '2px 0 0' }}>
+                        Tahmini Teslim: {order.estimatedDelivery || '—'}
+                      </p>
+                    )}
+                    {step.label === 'Teslim Edildi' && order.status === 'Teslim Edildi' && (
+                      <p style={{ fontSize: '0.7rem', color: 'rgba(255,215,100,0.6)', fontFamily: 'Jost,sans-serif', margin: '2px 0 0' }}>
+                        {order.estimatedDelivery || '—'} tarihinde teslim edildi
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Address */}
+        {order.address && (
+          <div style={{ margin: '0 24px', padding: '14px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 8, marginBottom: 20 }}>
+            <p style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(240,235,224,0.35)', fontFamily: 'Jost,sans-serif', margin: '0 0 6px' }}>Teslimat Adresi</p>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(240,235,224,0.7)', fontFamily: 'Jost,sans-serif', margin: 0, lineHeight: 1.7 }}>
+              {order.address.fullName}<br/>
+              {order.address.address}<br/>
+              {order.address.district}, {order.address.city}<br/>
+              <span style={{ color: 'rgba(240,235,224,0.45)' }}>{order.address.phone}</span>
+            </p>
+          </div>
+        )}
+
+        {/* Actions */}
+        <div style={{ padding: '0 24px 24px', display: 'flex', gap: 10 }}>
+          {carrierUrl && (
+            <a
+              href={carrierUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                padding: '10px 16px', borderRadius: 8, fontFamily: 'Jost,sans-serif',
+                fontSize: '0.8rem', fontWeight: 600, textDecoration: 'none',
+                background: 'rgba(255,215,100,0.9)', color: '#1a1000',
+              }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              {order.carrier} Sitesinde Takip Et
+            </a>
+          )}
+          <button
+            onClick={onClose}
+            style={{
+              padding: '10px 20px', borderRadius: 8, fontFamily: 'Jost,sans-serif',
+              fontSize: '0.8rem', fontWeight: 500, border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.04)', color: 'rgba(240,235,224,0.6)', cursor: 'pointer',
+            }}
+          >
+            Kapat
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function SiparislerimPage() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [orders, setOrders] = useState([])
   const [expandedId, setExpandedId] = useState(null)
+  const [trackingOrder, setTrackingOrder] = useState(null)
   const [activeTab, setActiveTab] = useState('tumu')
 
   useEffect(() => {
@@ -292,6 +443,74 @@ export default function SiparislerimPage() {
           <h1 className="sip-header__title">Siparişlerim</h1>
           <p className="sip-header__sub">{orders.length} sipariş bulundu</p>
         </motion.div>
+
+        {/* User profile card */}
+        {user && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.05 }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 16,
+              background: 'rgba(255,215,100,0.04)',
+              border: '1px solid rgba(255,215,100,0.12)',
+              borderRadius: 12, padding: '16px 20px', marginBottom: 28,
+            }}
+          >
+            {/* Avatar */}
+            <div style={{
+              width: 44, height: 44, borderRadius: '50%',
+              background: 'rgba(255,215,100,0.12)', border: '1px solid rgba(255,215,100,0.2)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0, fontSize: '1rem', fontWeight: 700,
+              color: 'rgba(255,215,100,0.8)', fontFamily: 'Jost,sans-serif',
+            }}>
+              {(user.firstName?.[0] ?? '') + (user.lastName?.[0] ?? '')}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#f0ebe0', fontFamily: 'Jost,sans-serif', margin: 0 }}>
+                {user.firstName} {user.lastName}
+              </p>
+              <p style={{ fontSize: '0.78rem', color: 'rgba(240,235,224,0.45)', fontFamily: 'Jost,sans-serif', margin: '2px 0 0' }}>
+                {user.email}
+              </p>
+            </div>
+            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              <p style={{ fontSize: '1.3rem', fontWeight: 700, color: 'rgba(255,215,100,0.85)', fontFamily: 'Jost,sans-serif', margin: 0 }}>
+                {orders.length}
+              </p>
+              <p style={{ fontSize: '0.68rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(240,235,224,0.35)', margin: 0 }}>
+                Sipariş
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Summary stat cards */}
+        {orders.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 28 }}
+          >
+            {[
+              { label: 'Toplam Sipariş', val: orders.length, sub: 'toplam' },
+              { label: 'Kargoda', val: orders.filter(o => o.status === 'Kargoda').length, sub: 'yolda' },
+              { label: 'Teslim Edildi', val: orders.filter(o => o.status === 'Teslim Edildi').length, sub: 'tamamlandı' },
+              { label: 'Toplam Harcama', val: formatCurrency(orders.reduce((s, o) => s + o.total, 0)), sub: 'ödendi' },
+            ].map((c, i) => (
+              <div key={i} style={{
+                background: 'rgba(255,215,100,0.03)', border: '1px solid rgba(255,215,100,0.08)',
+                borderRadius: 10, padding: '14px 16px',
+              }}>
+                <p style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(240,235,224,0.35)', fontFamily: 'Jost,sans-serif', margin: '0 0 6px' }}>{c.label}</p>
+                <p style={{ fontSize: '1.3rem', fontWeight: 700, color: 'rgba(255,215,100,0.85)', fontFamily: 'Jost,sans-serif', margin: '0 0 2px' }}>{c.val}</p>
+                <p style={{ fontSize: '0.68rem', color: 'rgba(240,235,224,0.3)', fontFamily: 'Jost,sans-serif', margin: 0 }}>{c.sub}</p>
+              </div>
+            ))}
+          </motion.div>
+        )}
 
         <motion.div
           className="sip-tabs"
@@ -377,6 +596,11 @@ export default function SiparislerimPage() {
                       <div>
                         <div className="sip-order__no">{order.id}</div>
                         <div className="sip-order__date">{formatDate(order.date)}</div>
+                        {order.address?.city && (
+                          <div style={{ fontSize: '0.7rem', color: 'rgba(240,235,224,0.35)', marginTop: 2, fontFamily: 'Jost,sans-serif' }}>
+                            {order.address.district}, {order.address.city}
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -412,8 +636,16 @@ export default function SiparislerimPage() {
                         {/* Timeline */}
                         <OrderTimeline status={order.status} />
 
-                        {/* Delivery + Payment info */}
-                        <div className="sip-detail-grid">
+                        {/* Account + Delivery + Payment info */}
+                        <div className="sip-detail-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                          <div>
+                            <p className="sip-detail-section__title">Hesap Bilgileri</p>
+                            <p className="sip-detail-section__text">
+                              <strong>{user?.firstName} {user?.lastName}</strong><br />
+                              {user?.email}<br />
+                              {user?.phone || ''}
+                            </p>
+                          </div>
                           <div>
                             <p className="sip-detail-section__title">Teslimat Adresi</p>
                             <p className="sip-detail-section__text">
@@ -427,9 +659,9 @@ export default function SiparislerimPage() {
                             <p className="sip-detail-section__title">Kargo & Ödeme</p>
                             <p className="sip-detail-section__text">
                               Ödeme: {order.paymentMethod}<br />
-                              Kargo Firması: {order.carrier || '—'}<br />
+                              Kargo: {order.carrier || '—'}<br />
                               {order.trackingNo && <>Takip No: {order.trackingNo}<br /></>}
-                              Tahmini Teslim: {order.estimatedDelivery || '—'}
+                              Teslim: {order.estimatedDelivery || '—'}
                             </p>
                           </div>
                         </div>
@@ -445,6 +677,9 @@ export default function SiparislerimPage() {
                               />
                               <div>
                                 <div className="sip-detail-item__name">{item.product.name}</div>
+                                {item.product.subtitle && (
+                                  <div style={{ fontSize: '0.72rem', color: 'rgba(240,235,224,0.35)', fontFamily: 'Jost,sans-serif', marginTop: 1 }}>{item.product.subtitle}</div>
+                                )}
                                 <div className="sip-detail-item__qty">{item.quantity} adet × {formatCurrency(item.product.price)}</div>
                               </div>
                               <div className="sip-detail-item__price">
@@ -488,8 +723,8 @@ export default function SiparislerimPage() {
                             </svg>
                             Dekont Yazdır / PDF
                           </button>
-                          {order.status !== 'İptal' && order.status !== 'Teslim Edildi' && (
-                            <button className="sip-btn sip-btn--ghost">
+                          {(order.status === 'Kargoda' || order.status === 'Teslim Edildi') && order.trackingNo && (
+                            <button className="sip-btn sip-btn--ghost" onClick={() => setTrackingOrder(order)}>
                               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                                 <rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
                               </svg>
@@ -506,6 +741,11 @@ export default function SiparislerimPage() {
           </div>
         )}
       </div>
+
+      {/* Kargo Takip Modal */}
+      {trackingOrder && (
+        <KargoTakipModal order={trackingOrder} onClose={() => setTrackingOrder(null)} />
+      )}
     </div>
   )
 }

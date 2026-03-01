@@ -11,6 +11,8 @@ import AdminFinans from './tabs/AdminFinans'
 import AdminAnalitik from './tabs/AdminAnalitik'
 import AdminDestek from './tabs/AdminDestek'
 import AdminTeslimat from './tabs/AdminTeslimat'
+import AdminKVKK from './tabs/AdminKVKK'
+import AdminMuhasebe from './tabs/AdminMuhasebe'
 import './AdminPage.css'
 
 const NAV_MAIN = [
@@ -89,6 +91,15 @@ const NAV_MAIN = [
     ),
   },
   {
+    id: 'muhasebe', label: 'Muhasebe & ERP', path: '/admin/muhasebe',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21h8m-4-4v4"/>
+      </svg>
+    ),
+  },
+  {
     id: 'destek', label: 'Müşteri Destek', path: '/admin/destek',
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -111,6 +122,14 @@ const NAV_MAIN = [
 
 const NAV_SYSTEM = [
   {
+    id: 'kvkk', label: 'KVKK / GDPR', path: '/admin/kvkk',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    ),
+  },
+  {
     id: 'ayarlar', label: 'Ayarlar', path: '/admin/ayarlar',
     icon: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -132,6 +151,8 @@ const PAGE_TITLES = {
   '/admin/analitik': { title: 'Analitik', sub: 'KPI raporları ve satış analizleri' },
   '/admin/destek': { title: 'Müşteri Destek', sub: 'Destek talepleri ve müşteri iletişimi' },
   '/admin/teslimat': { title: 'Teslimat', sub: 'Kargo takibi ve teslimat yönetimi' },
+  '/admin/kvkk': { title: 'KVKK / GDPR', sub: 'Veri koruma, çerez politikası ve aktivite logları' },
+  '/admin/muhasebe': { title: 'Muhasebe & ERP', sub: 'e-Fatura, ERP entegrasyonu, cari hesap ve çoklu depo' },
 }
 
 const NOTIFICATIONS = [
@@ -251,12 +272,12 @@ export default function AdminPage() {
 
           {!collapsed && <p className="admin-nav__section-label" style={{ marginTop: 12 }}>Pazarlama & Finans</p>}
           {collapsed && <div style={{ height: 8 }} />}
-          {NAV_MAIN.slice(4, 7).map(item => <NavItem key={item.id} item={item} />)}
+          {NAV_MAIN.slice(4, 8).map(item => <NavItem key={item.id} item={item} />)}
 
           {!collapsed && <p className="admin-nav__section-label" style={{ marginTop: 12 }}>Operasyon</p>}
-          {NAV_MAIN.slice(7).map(item => <NavItem key={item.id} item={item} />)}
+          {NAV_MAIN.slice(8).map(item => <NavItem key={item.id} item={item} />)}
 
-          {!collapsed && <p className="admin-nav__section-label" style={{ marginTop: 12 }}>Sistem</p>}
+          {!collapsed && <p className="admin-nav__section-label" style={{ marginTop: 12 }}>Uyum & Sistem</p>}
           {collapsed && <div style={{ height: 8 }} />}
           {NAV_SYSTEM.map(item => <NavItem key={item.id} item={item} />)}
         </nav>
@@ -371,6 +392,8 @@ export default function AdminPage() {
             <Route path="analitik" element={<AdminAnalitik />} />
             <Route path="destek" element={<AdminDestek />} />
             <Route path="teslimat" element={<AdminTeslimat />} />
+            <Route path="kvkk" element={<AdminKVKK />} />
+            <Route path="muhasebe" element={<AdminMuhasebe />} />
           </Routes>
         </main>
       </div>

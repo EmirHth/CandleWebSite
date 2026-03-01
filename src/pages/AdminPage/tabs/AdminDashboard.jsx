@@ -477,6 +477,7 @@ export default function AdminDashboard() {
               <h2 className="adm-card-title">Son Aktiviteler</h2>
               <p className="adm-card-sub">Bugün & dün</p>
             </div>
+            <button className="adm-card-link" onClick={() => navigate('/admin/kvkk')}>Log Kaydı →</button>
           </div>
           <div className="adm-activity">
             {ACTIVITY.map((a, i) => (

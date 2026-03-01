@@ -179,6 +179,7 @@ function CheckoutModal({ items, subtotal, shipping, discount, promoCode, total, 
       status: 'Hazırlanıyor',
       address,
       paymentMethod: payMethod,
+      cardLastFour: payMethod === 'Kredi Kartı' ? card.no.replace(/\s/g, '').slice(-4) : null,
       carrier,
       trackingNo: null,
       estimatedDelivery: addDays(3),
@@ -626,8 +627,25 @@ export default function SepetPage() {
     setCompletedOrder(order)
     logActivity(LOG_TYPES.PURCHASE, {
       orderId: order.id,
+      userFullName: `${user?.firstName || ''} ${user?.lastName || ''}`.trim(),
+      userEmail: user?.email,
       total: order.total,
+      subtotal: order.subtotal,
+      shipping: order.shipping,
+      discount: order.discount,
+      promoCode: order.promoCode,
       itemCount: order.items.length,
+      items: order.items.map(i => ({
+        name: i.product.name,
+        category: i.product.category,
+        price: i.product.price,
+        quantity: i.quantity,
+      })),
+      address: order.address,
+      paymentMethod: order.paymentMethod,
+      cardLastFour: order.cardLastFour,
+      carrier: order.carrier,
+      estimatedDelivery: order.estimatedDelivery,
     }, user?.id)
     if (promoApplied) {
       logActivity(LOG_TYPES.PROMO_APPLIED, { promoCode: 'LAYDORA10' }, user?.id)

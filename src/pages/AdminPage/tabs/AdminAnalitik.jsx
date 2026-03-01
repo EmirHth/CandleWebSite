@@ -74,8 +74,10 @@ export default function AdminAnalitik() {
   const TABS = [
     { id: 'genel', label: 'Genel Bakış' },
     { id: 'urunler', label: 'Ürün Performansı' },
-    { id: 'musteriler', label: 'Müşteri Analizi' },
+    { id: 'musteriler', label: 'Müşteri & CRM' },
     { id: 'hunisi', label: 'Satış Hunisi' },
+    { id: 'kampanya', label: 'Kampanya Motoru' },
+    { id: 'finanaliz', label: 'Finansal Analiz' },
   ]
 
   const KpiChange = ({ val, suffix = '%', up }) => (
@@ -188,6 +190,59 @@ export default function AdminAnalitik() {
                   <span style={{ fontSize: '0.66rem', color: 'var(--adm-text-3)' }}>Sipariş</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* OKR Tablosu */}
+          <div className="adm-card">
+            <div className="adm-card-header">
+              <div>
+                <p className="adm-card-title">OKR İzleme — Şubat 2026</p>
+                <p className="adm-card-sub">Hedefler ve Anahtar Sonuçlar</p>
+              </div>
+            </div>
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead>
+                  <tr>
+                    <th>Hedef</th><th>Anahtar Sonuç</th><th>Hedef</th><th>Gerçekleşen</th><th style={{ width: 120 }}>İlerleme</th><th>Durum</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { obj: 'Geliri Artır', kr: 'Aylık gelir hedefi', target: '₺60.000', actual: '₺48.290', pct: 80, rag: 'amber' },
+                    { obj: 'Geliri Artır', kr: 'Yeni müşteri sayısı', target: '250', actual: '218', pct: 87, rag: 'green' },
+                    { obj: 'Müşteri Memnuniyeti', kr: 'Ortalama puan', target: '4.8', actual: '4.6', pct: 96, rag: 'green' },
+                    { obj: 'Müşteri Memnuniyeti', kr: 'İade oranı', target: '<%2', actual: '%3.1', pct: 40, rag: 'red' },
+                    { obj: 'Dijital Büyüme', kr: 'Organik trafik artışı', target: '%30', actual: '%22', pct: 73, rag: 'amber' },
+                    { obj: 'Dijital Büyüme', kr: 'Email açılma oranı', target: '%28', actual: '%31', pct: 100, rag: 'green' },
+                  ].map((row, i) => {
+                    const ragColor = row.rag === 'green' ? '#34d399' : row.rag === 'amber' ? '#fbbf24' : '#f87171'
+                    const ragLabel = row.rag === 'green' ? 'Yeşil' : row.rag === 'amber' ? 'Amber' : 'Kırmızı'
+                    return (
+                      <tr key={i}>
+                        <td style={{ fontSize: '0.78rem', color: 'var(--adm-text-3)' }}>{row.obj}</td>
+                        <td style={{ fontSize: '0.82rem', color: 'var(--adm-text)', fontWeight: 500 }}>{row.kr}</td>
+                        <td style={{ fontSize: '0.8rem', color: 'var(--adm-text-3)' }}>{row.target}</td>
+                        <td style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--adm-text)' }}>{row.actual}</td>
+                        <td>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <div style={{ flex: 1, height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: `${Math.min(row.pct, 100)}%`, background: ragColor, borderRadius: 3 }} />
+                            </div>
+                            <span style={{ fontSize: '0.68rem', color: ragColor, minWidth: 28 }}>%{row.pct}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: 4, color: ragColor, background: `${ragColor}18`, border: `1px solid ${ragColor}30` }}>
+                            ● {ragLabel}
+                          </span>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -367,6 +422,92 @@ export default function AdminAnalitik() {
             </div>
           </div>
 
+          {/* RFM Analizi */}
+          <div className="adm-card">
+            <div className="adm-card-header">
+              <div>
+                <p className="adm-card-title">RFM Analizi</p>
+                <p className="adm-card-sub">Recency · Frequency · Monetary — Müşteri segment puanları</p>
+              </div>
+            </div>
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead>
+                  <tr><th>Segment</th><th>Müşteri</th><th>Recency (gün)</th><th>Frequency</th><th>Monetary</th><th>RFM Skoru</th></tr>
+                </thead>
+                <tbody>
+                  {[
+                    { seg: 'Champions', count: 68, recency: 7, freq: 12, monetary: '₺2.840', score: '5-5-5', color: '#34d399' },
+                    { seg: 'Loyal Customers', count: 124, recency: 18, freq: 7, monetary: '₺1.420', score: '4-4-4', color: '#60a5fa' },
+                    { seg: 'Potential Loyalists', count: 89, recency: 24, freq: 4, monetary: '₺820', score: '4-3-3', color: 'var(--adm-gold)' },
+                    { seg: 'At Risk', count: 143, recency: 62, freq: 3, monetary: '₺540', score: '2-3-2', color: '#fbbf24' },
+                    { seg: 'Hibernating', count: 186, recency: 120, freq: 2, monetary: '₺310', score: '1-2-2', color: '#9ca3af' },
+                    { seg: 'Lost Customers', count: 98, recency: 240, freq: 1, monetary: '₺180', score: '1-1-1', color: '#f87171' },
+                  ].map((r, i) => (
+                    <tr key={i}>
+                      <td>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 600, padding: '2px 10px', borderRadius: 5, color: r.color, background: `${r.color}18`, border: `1px solid ${r.color}25` }}>
+                          {r.seg}
+                        </span>
+                      </td>
+                      <td style={{ fontWeight: 600, color: 'var(--adm-text)' }}>{r.count}</td>
+                      <td style={{ fontSize: '0.8rem', color: r.recency < 30 ? '#34d399' : r.recency < 90 ? 'var(--adm-gold)' : '#f87171' }}>{r.recency} gün</td>
+                      <td style={{ fontSize: '0.8rem', color: 'var(--adm-text-2)' }}>×{r.freq}</td>
+                      <td style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--adm-gold)' }}>{r.monetary}</td>
+                      <td style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: r.color }}>{r.score}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Cohort Retention */}
+          <div className="adm-card">
+            <div className="adm-card-header">
+              <div>
+                <p className="adm-card-title">Cohort Retention Analizi</p>
+                <p className="adm-card-sub">Aylık müşteri kohortları — retention yüzdesi</p>
+              </div>
+            </div>
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead>
+                  <tr>
+                    <th>Kohort</th><th>Müşteri</th>
+                    {['Ay 0', 'Ay 1', 'Ay 2', 'Ay 3', 'Ay 4', 'Ay 5'].map(h => <th key={h}>{h}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { cohort: 'Eyl 2025', size: 218, ret: [100, 42, 31, 28, 24, 21] },
+                    { cohort: 'Eki 2025', size: 271, ret: [100, 44, 33, 29, 26, null] },
+                    { cohort: 'Kas 2025', size: 312, ret: [100, 46, 35, 31, null, null] },
+                    { cohort: 'Ara 2025', size: 380, ret: [100, 48, 36, null, null, null] },
+                    { cohort: 'Oca 2026', size: 286, ret: [100, 51, null, null, null, null] },
+                    { cohort: 'Şub 2026', size: 218, ret: [100, null, null, null, null, null] },
+                  ].map((row, i) => (
+                    <tr key={i}>
+                      <td style={{ fontSize: '0.78rem', color: 'var(--adm-text-3)', whiteSpace: 'nowrap' }}>{row.cohort}</td>
+                      <td style={{ fontWeight: 600, color: 'var(--adm-text)' }}>{row.size}</td>
+                      {row.ret.map((v, j) => (
+                        <td key={j} style={{ textAlign: 'center' }}>
+                          {v !== null ? (
+                            <span style={{
+                              fontSize: '0.75rem', fontWeight: 600, padding: '2px 6px', borderRadius: 4,
+                              color: v === 100 ? 'var(--adm-text)' : v >= 40 ? '#34d399' : v >= 25 ? 'var(--adm-gold)' : '#f87171',
+                              background: v === 100 ? 'rgba(255,255,255,0.08)' : v >= 40 ? 'rgba(52,211,153,0.1)' : v >= 25 ? 'rgba(240,174,50,0.1)' : 'rgba(248,113,113,0.1)',
+                            }}>%{v}</span>
+                          ) : <span style={{ color: 'var(--adm-text-3)', fontSize: '0.7rem' }}>—</span>}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <div className="adm-card">
               <div className="adm-card-header">
@@ -408,6 +549,258 @@ export default function AdminAnalitik() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── KAMPANYA MOTORU ─── */}
+      {activeTab === 'kampanya' && (
+        <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Otomasyon Kuralları */}
+          <div className="adm-card">
+            <div className="adm-card-header">
+              <div>
+                <p className="adm-card-title">Otomasyon Kuralları</p>
+                <p className="adm-card-sub">Tetikleyici tabanlı kampanya otomasyonu</p>
+              </div>
+              <button className="adm-btn" style={{ fontSize: '0.78rem' }}>+ Yeni Kural</button>
+            </div>
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead>
+                  <tr>
+                    <th>Kural Adı</th><th>Tetikleyici</th><th>Aksiyon</th><th>Gecikme</th><th>Durum</th><th>İşlem</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { name: 'Sepet Terk Hatırlatması', trigger: 'Sepet Terk', action: 'E-posta (Kupon)', delay: '2 saat', active: true },
+                    { name: 'Doğum Günü Sürprizi', trigger: 'Doğum Günü', action: 'E-posta + %15 Kupon', delay: '1 gün önce', active: true },
+                    { name: 'İlk Alışveriş Teşekkürü', trigger: 'İlk Sipariş', action: 'E-posta', delay: 'Anlık', active: true },
+                    { name: 'Pasif Müşteri Aktivasyonu', trigger: '90 Gün Sessiz', action: 'SMS + Push', delay: 'Anlık', active: false },
+                    { name: 'VIP Müşteri Özel Teklif', trigger: '5+ Sipariş', action: 'E-posta + %20 Kupon', delay: '1 gün', active: true },
+                  ].map((rule, i) => (
+                    <tr key={i}>
+                      <td style={{ fontWeight: 600, fontSize: '0.82rem', color: 'var(--adm-text)' }}>{rule.name}</td>
+                      <td><span style={{ fontSize: '0.73rem', padding: '2px 8px', borderRadius: 4, background: 'rgba(255,255,255,0.06)', color: 'var(--adm-text-2)' }}>{rule.trigger}</span></td>
+                      <td style={{ fontSize: '0.78rem', color: 'var(--adm-text-3)' }}>{rule.action}</td>
+                      <td style={{ fontSize: '0.78rem', color: 'var(--adm-text-3)' }}>{rule.delay}</td>
+                      <td>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 600, padding: '2px 8px', borderRadius: 4, color: rule.active ? '#34d399' : 'var(--adm-text-3)', background: rule.active ? 'rgba(52,211,153,0.1)' : 'rgba(255,255,255,0.04)' }}>
+                          {rule.active ? '● Aktif' : '○ Pasif'}
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', gap: 4 }}>
+                          {['Düzenle', 'Sil'].map(a => (
+                            <button key={a} style={{ fontSize: '0.68rem', padding: '2px 7px', borderRadius: 4, border: '1px solid var(--adm-border)', background: 'rgba(255,255,255,0.03)', color: 'var(--adm-text-3)', cursor: 'pointer' }}>{a}</button>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* A/B Test + Kampanya Performansı */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="adm-card">
+              <div className="adm-card-header">
+                <p className="adm-card-title">A/B Test Sonuçları</p>
+              </div>
+              <div style={{ padding: '0 16px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {[
+                  { name: 'Konu Satırı Testi', varA: 'Kış İndirimi: %30', varB: 'Bugün Son Gün!', convA: 4.2, convB: 6.8, trafficA: 50, trafficB: 50, winner: 'B' },
+                  { name: 'CTA Rengi Testi', varA: 'Altın Buton', varB: 'Beyaz Buton', convA: 3.1, convB: 2.8, trafficA: 50, trafficB: 50, winner: 'A' },
+                ].map((test, i) => (
+                  <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--adm-border)', borderRadius: 8, padding: '12px 16px' }}>
+                    <p style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--adm-text)', marginBottom: 10 }}>{test.name}</p>
+                    {[{ label: 'A', text: test.varA, conv: test.convA }, { label: 'B', text: test.varB, conv: test.convB }].map(v => (
+                      <div key={v.label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 700, width: 18, height: 18, borderRadius: 4, background: test.winner === v.label ? 'rgba(52,211,153,0.2)' : 'rgba(255,255,255,0.06)', color: test.winner === v.label ? '#34d399' : 'var(--adm-text-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{v.label}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--adm-text-2)', flex: 1 }}>{v.text}</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: test.winner === v.label ? '#34d399' : 'var(--adm-text-3)' }}>%{v.conv}</span>
+                        {test.winner === v.label && <span style={{ fontSize: '0.62rem', padding: '1px 6px', borderRadius: 4, background: 'rgba(52,211,153,0.15)', color: '#34d399', fontWeight: 700 }}>KAZANAN</span>}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="adm-card">
+              <div className="adm-card-header">
+                <p className="adm-card-title">Kampanya Performansı (Son 30 Gün)</p>
+              </div>
+              <div className="adm-table-wrap">
+                <table className="adm-table">
+                  <thead><tr><th>Kampanya</th><th>Gönderim</th><th>Açılma</th><th>Tıklama</th><th>Dönüşüm</th></tr></thead>
+                  <tbody>
+                    {[
+                      { name: 'Şubat İndirimi', sent: 4820, open: '38%', click: '12%', conv: '4.2%' },
+                      { name: 'Yeni Koleksiyon', sent: 4820, open: '31%', click: '9%', conv: '3.1%' },
+                      { name: 'VIP Teklif', sent: 624, open: '62%', click: '28%', conv: '18.4%' },
+                      { name: 'Sepet Hatırlatma', sent: 312, open: '71%', click: '34%', conv: '22.1%' },
+                    ].map((c, i) => (
+                      <tr key={i}>
+                        <td style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--adm-text)' }}>{c.name}</td>
+                        <td style={{ fontSize: '0.78rem', color: 'var(--adm-text-3)' }}>{c.sent.toLocaleString('tr-TR')}</td>
+                        <td style={{ fontSize: '0.78rem', color: '#60a5fa', fontWeight: 600 }}>{c.open}</td>
+                        <td style={{ fontSize: '0.78rem', color: 'var(--adm-gold)', fontWeight: 600 }}>{c.click}</td>
+                        <td style={{ fontSize: '0.78rem', color: '#34d399', fontWeight: 700 }}>{c.conv}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── FİNANSAL ANALİZ ─── */}
+      {activeTab === 'finanaliz' && (
+        <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* KPI Kartları */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+            {[
+              { label: 'Brüt Kâr Marjı', val: '%62.4', color: '#34d399', sub: 'Gelir − COGS' },
+              { label: 'Net Kâr Marjı', val: '%28.1', color: 'var(--adm-gold)', sub: 'Tüm giderler sonrası' },
+              { label: 'EBITDA', val: '₺13.570', color: '#a78bfa', sub: 'Şubat 2026' },
+            ].map((k, i) => (
+              <div key={i} className="adm-status-card">
+                <span className="adm-status-card__label">{k.label}</span>
+                <div className="adm-status-card__val" style={{ color: k.color, fontSize: '1.4rem' }}>{k.val}</div>
+                <div style={{ fontSize: '0.68rem', color: 'var(--adm-text-3)', marginTop: 4 }}>{k.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            {/* Maliyet Dağılımı */}
+            <div className="adm-card">
+              <div className="adm-card-header">
+                <p className="adm-card-title">Maliyet Dağılımı</p>
+              </div>
+              <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {[
+                  { label: 'Malzeme & Üretim', pct: 38, val: '₺18.350', color: '#f87171' },
+                  { label: 'Kargo & Lojistik', pct: 14, val: '₺6.760', color: '#fbbf24' },
+                  { label: 'Pazarlama & Reklam', pct: 12, val: '₺5.795', color: '#60a5fa' },
+                  { label: 'Genel Giderler', pct: 8, val: '₺3.863', color: '#a78bfa' },
+                ].map((c, i) => (
+                  <div key={i}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                      <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-2)' }}>{c.label}</span>
+                      <div style={{ display: 'flex', gap: 10 }}>
+                        <span style={{ fontSize: '0.74rem', color: 'var(--adm-text-3)' }}>{c.val}</span>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 600, color: c.color }}>%{c.pct}</span>
+                      </div>
+                    </div>
+                    <div style={{ height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${c.pct}%`, background: c.color, borderRadius: 3 }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Başabaş Analizi */}
+            <div className="adm-card">
+              <div className="adm-card-header">
+                <p className="adm-card-title">Başabaş Analizi</p>
+              </div>
+              <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {[
+                  { label: 'Sabit Maliyetler', val: '₺12.400 / ay' },
+                  { label: 'Değişken Maliyet (birim)', val: '₺112' },
+                  { label: 'Ortalama Satış Fiyatı', val: '₺296' },
+                  { label: 'Katkı Payı', val: '₺184 / adet' },
+                  { label: 'BEP Sipariş Adeti', val: '68 adet / ay', highlight: true },
+                  { label: 'BEP Geliri', val: '₺20.128 / ay', highlight: true },
+                  { label: 'Mevcut Performans', val: '312 adet / ₺48.290', green: true },
+                ].map((row, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0', borderBottom: i < 6 ? '1px solid var(--adm-border)' : 'none' }}>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-3)' }}>{row.label}</span>
+                    <span style={{ fontSize: '0.82rem', fontWeight: row.highlight || row.green ? 700 : 500, color: row.green ? '#34d399' : row.highlight ? 'var(--adm-gold)' : 'var(--adm-text-2)' }}>{row.val}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Ürün Bazlı Kârlılık */}
+          <div className="adm-card">
+            <div className="adm-card-header">
+              <p className="adm-card-title">Ürün Bazlı Kârlılık Tablosu</p>
+            </div>
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead>
+                  <tr><th>Ürün</th><th>Gelir</th><th>COGS</th><th>Brüt Kâr</th><th>Marj %</th><th>Kârlılık</th></tr>
+                </thead>
+                <tbody>
+                  {[
+                    { name: 'Gece Mumu', revenue: 111843, cogs: 38044, margin: 66 },
+                    { name: 'Vanilya Serenity', revenue: 63992, cogs: 23037, margin: 64 },
+                    { name: 'Kış Mumu', revenue: 56661, cogs: 21931, margin: 61 },
+                    { name: 'Romantic Set', revenue: 78244, cogs: 35210, margin: 55 },
+                    { name: 'Bergamot Difüzör', revenue: 49428, cogs: 19771, margin: 60 },
+                  ].map((p, i) => {
+                    const gp = p.revenue - p.cogs
+                    return (
+                      <tr key={i}>
+                        <td style={{ fontWeight: 600, fontSize: '0.82rem', color: 'var(--adm-text)' }}>{p.name}</td>
+                        <td><span className="adm-table-amount">₺{p.revenue.toLocaleString('tr-TR')}</span></td>
+                        <td style={{ fontSize: '0.8rem', color: '#f87171' }}>₺{p.cogs.toLocaleString('tr-TR')}</td>
+                        <td style={{ fontSize: '0.8rem', fontWeight: 600, color: '#34d399' }}>₺{gp.toLocaleString('tr-TR')}</td>
+                        <td>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '2px 8px', borderRadius: 5, color: p.margin >= 65 ? '#34d399' : p.margin >= 55 ? 'var(--adm-gold)' : '#fbbf24', background: 'rgba(255,255,255,0.05)' }}>
+                            %{p.margin}
+                          </span>
+                        </td>
+                        <td>
+                          <div style={{ width: 80, height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
+                            <div style={{ height: '100%', width: `${p.margin}%`, background: p.margin >= 65 ? '#34d399' : 'var(--adm-gold)', borderRadius: 3 }} />
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* 12 Aylık Nakit Akışı */}
+          <div className="adm-card">
+            <div className="adm-card-header">
+              <p className="adm-card-title">12 Aylık Nakit Akışı</p>
+            </div>
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead>
+                  <tr><th>Ay</th><th>Giriş</th><th>Çıkış</th><th>Net Akış</th><th>Kümülatif</th></tr>
+                </thead>
+                <tbody>
+                  {MONTHLY_SALES.map((m, i) => {
+                    const outflow = Math.round(m.revenue * 0.38)
+                    const net = m.revenue - outflow
+                    const cumulative = MONTHLY_SALES.slice(0, i + 1).reduce((s, x) => s + x.revenue - Math.round(x.revenue * 0.38), 0)
+                    return (
+                      <tr key={i}>
+                        <td style={{ fontSize: '0.78rem', color: 'var(--adm-text-3)', fontWeight: i === MONTHLY_SALES.length - 1 ? 700 : 400 }}>{m.month}</td>
+                        <td style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 600 }}>₺{m.revenue.toLocaleString('tr-TR')}</td>
+                        <td style={{ fontSize: '0.8rem', color: '#f87171' }}>₺{outflow.toLocaleString('tr-TR')}</td>
+                        <td style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--adm-gold)' }}>₺{net.toLocaleString('tr-TR')}</td>
+                        <td style={{ fontSize: '0.8rem', color: 'var(--adm-text-2)' }}>₺{cumulative.toLocaleString('tr-TR')}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

@@ -22,7 +22,8 @@
       "Bash(pkill:*)",
       "Bash(cd C:\\\\Users\\\\emirh\\\\OneDrive\\\\Desktop\\\\Candle:*)",
       "Bash(head:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

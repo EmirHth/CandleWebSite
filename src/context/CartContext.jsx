@@ -51,8 +51,11 @@ export function CartProvider({ children }) {
         logActivity(LOG_TYPES.ADD_TO_CART, {
           productId: product.id,
           productName: product.name,
+          category: product.category,
           price: product.price,
           quantity,
+          userFullName: authUser ? `${authUser.firstName} ${authUser.lastName}` : null,
+          userEmail: authUser?.email ?? null,
         }, authUser?.id ?? null)
       } catch {}
     },
@@ -60,7 +63,25 @@ export function CartProvider({ children }) {
   )
 
   const removeFromCart = useCallback((productId) => {
-    setItems((prev) => prev.filter((i) => i.product.id !== productId))
+    setItems((prev) => {
+      const removing = prev.find((i) => i.product.id === productId)
+      if (removing) {
+        try {
+          const authRaw = localStorage.getItem('laydora_auth')
+          const authUser = authRaw ? JSON.parse(authRaw) : null
+          logActivity(LOG_TYPES.REMOVE_FROM_CART, {
+            productId: removing.product.id,
+            productName: removing.product.name,
+            category: removing.product.category,
+            price: removing.product.price,
+            quantity: removing.quantity,
+            userFullName: authUser ? `${authUser.firstName} ${authUser.lastName}` : null,
+            userEmail: authUser?.email ?? null,
+          }, authUser?.id ?? null)
+        } catch {}
+      }
+      return prev.filter((i) => i.product.id !== productId)
+    })
   }, [])
 
   const updateQuantity = useCallback((productId, quantity) => {

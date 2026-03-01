@@ -69,6 +69,26 @@ function RelatedCard({ product }) {
   )
 }
 
+/* ── Stars component ── */
+function Stars({ rating, size = 14 }) {
+  return (
+    <span style={{ fontSize: size, color: 'rgba(210,160,80,0.9)', letterSpacing: 2 }}>
+      {'★'.repeat(Math.floor(rating))}
+      {rating % 1 >= 0.5 ? '½' : ''}
+      {'☆'.repeat(5 - Math.ceil(rating))}
+    </span>
+  )
+}
+
+/* ── Mock reviews ── */
+const MOCK_REVIEWS = [
+  { id: 1, author: 'Zeynep A.', avatar: 'ZA', rating: 5, date: '2026-02-18', title: 'Muhteşem koku, uzun süre gidiyor!', body: 'Bu mumu aldığımda çok şüpheliydim ama gerçekten beklentilerimi aştı. Koku oda dolduruyor ve 40 saat yandı. Kesinlikle tavsiye ederim.', images: [] },
+  { id: 2, author: 'Emir K.', avatar: 'EK', rating: 5, date: '2026-02-10', title: 'Hediye olarak aldım, çok beğenildi', body: 'Annem için aldım, ambalajı çok şık geldi. Kokusu narin ama uzun süre gidiyor. Kesinlikle tekrar alacağım.', images: ['img1'] },
+  { id: 3, author: 'Fatma Y.', avatar: 'FY', rating: 4, date: '2026-01-28', title: 'Kalite gerçekten iyi', body: 'Daha önce başka marka mumlar almıştım ama bu çok daha kaliteli. Tek eksiğim kokusu biraz daha yoğun olabilirdi.', images: [] },
+  { id: 4, author: 'Can Ö.', avatar: 'CÖ', rating: 5, date: '2026-01-15', title: 'Tam istediğim gibi', body: 'Hem görsel hem de koku olarak harika. El yapımı olduğu belli, fitili çok düzgün yanıyor. Laydora\'ya güven tam.', images: [] },
+  { id: 5, author: 'Selin T.', avatar: 'ST', rating: 4, date: '2026-01-05', title: 'Güzel ürün, hızlı kargo', body: 'Ürün güzel geldi, kargo da çok hızlıydı. 3 gün içinde elime ulaştı. Kokusu hafif başlangıçta ama yanarken açılıyor.', images: [] },
+]
+
 export default function UrunDetayPage() {
   const { slug } = useParams()
   const navigate = useNavigate()
@@ -77,6 +97,10 @@ export default function UrunDetayPage() {
   const { isAuthenticated, user } = useAuth()
   const [quantity, setQuantity] = useState(1)
   const [favorited, setFavorited] = useState(false)
+  const [reviewFormOpen, setReviewFormOpen] = useState(false)
+  const [newReview, setNewReview] = useState({ rating: 5, title: '', body: '' })
+  const [reviews, setReviews] = useState(MOCK_REVIEWS)
+  const [reviewSortBy, setReviewSortBy] = useState('recent')
 
   const product = products.find((p) => p.slug === slug)
 
@@ -85,7 +109,10 @@ export default function UrunDetayPage() {
       logActivity(LOG_TYPES.VIEW_PRODUCT, {
         productId: product.id,
         productName: product.name,
+        category: product.category,
         price: product.price,
+        userFullName: user ? `${user.firstName} ${user.lastName}` : null,
+        userEmail: user?.email ?? null,
       }, user?.id ?? null)
     }
   }, [slug]) // eslint-disable-line
@@ -316,6 +343,177 @@ export default function UrunDetayPage() {
               <p>Kullanılmamış ve orijinal ambalajında ürünler satın alma tarihinden itibaren 14 gün içinde iade edilebilir.</p>
             </div>
           </AccordionItem>
+        </div>
+      </motion.div>
+
+      {/* ── Reviews Section ── */}
+      <motion.div
+        className="detay-reviews-section"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Header */}
+        <div className="detay-reviews-header">
+          <div>
+            <h2 className="detay-reviews-title">Müşteri Yorumları</h2>
+            <p className="detay-reviews-sub">{reviews.length} değerlendirme</p>
+          </div>
+          <button
+            className="detay-reviews-write-btn"
+            onClick={() => requireAuth(() => setReviewFormOpen(v => !v))}
+          >
+            {reviewFormOpen ? 'İptal' : '+ Yorum Yaz'}
+          </button>
+        </div>
+
+        {/* Rating Summary */}
+        <div className="detay-reviews-summary">
+          <div className="detay-reviews-score">
+            <span className="detay-reviews-score__num">{product.rating.toFixed(1)}</span>
+            <Stars rating={product.rating} size={18} />
+            <span className="detay-reviews-score__total">{product.reviewCount} değerlendirme</span>
+          </div>
+          <div className="detay-reviews-bars">
+            {[5, 4, 3, 2, 1].map(star => {
+              const count = reviews.filter(r => r.rating === star).length
+              const pct = reviews.length > 0 ? Math.round((count / reviews.length) * 100) : 0
+              return (
+                <div key={star} className="detay-reviews-bar-row">
+                  <span className="detay-reviews-bar-label">{star} ★</span>
+                  <div className="detay-reviews-bar-track">
+                    <div className="detay-reviews-bar-fill" style={{ width: `${pct}%` }} />
+                  </div>
+                  <span className="detay-reviews-bar-pct">{pct}%</span>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Write Review Form */}
+        <AnimatePresence>
+          {reviewFormOpen && (
+            <motion.div
+              className="detay-review-form"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              style={{ overflow: 'hidden' }}
+            >
+              <div className="detay-review-form__inner">
+                <p className="detay-review-form__label">Puanınız</p>
+                <div className="detay-review-form__stars">
+                  {[1, 2, 3, 4, 5].map(s => (
+                    <button
+                      key={s}
+                      className={`detay-review-star-btn ${newReview.rating >= s ? 'detay-review-star-btn--active' : ''}`}
+                      onClick={() => setNewReview(v => ({ ...v, rating: s }))}
+                    >★</button>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  placeholder="Başlık (isteğe bağlı)"
+                  className="detay-review-input"
+                  value={newReview.title}
+                  onChange={e => setNewReview(v => ({ ...v, title: e.target.value }))}
+                />
+                <textarea
+                  placeholder="Deneyiminizi paylaşın…"
+                  className="detay-review-textarea"
+                  rows={4}
+                  value={newReview.body}
+                  onChange={e => setNewReview(v => ({ ...v, body: e.target.value }))}
+                />
+                <div className="detay-review-form__footer">
+                  <label className="detay-review-img-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    Fotoğraf Ekle
+                    <input type="file" accept="image/*" multiple style={{ display: 'none' }} />
+                  </label>
+                  <button
+                    className="detay-review-submit"
+                    disabled={!newReview.body.trim()}
+                    onClick={() => {
+                      if (!newReview.body.trim()) return
+                      const initials = user?.firstName?.[0]?.toUpperCase() + (user?.lastName?.[0]?.toUpperCase() || '')
+                      setReviews(prev => [{
+                        id: Date.now(),
+                        author: `${user?.firstName || 'Kullanıcı'} ${(user?.lastName?.[0] || '')}.`,
+                        avatar: initials || 'K',
+                        rating: newReview.rating,
+                        date: new Date().toISOString().split('T')[0],
+                        title: newReview.title,
+                        body: newReview.body,
+                        images: [],
+                      }, ...prev])
+                      setNewReview({ rating: 5, title: '', body: '' })
+                      setReviewFormOpen(false)
+                    }}
+                  >
+                    Yorumu Gönder
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Sort */}
+        <div className="detay-reviews-sort">
+          {[{ key: 'recent', label: 'En Yeni' }, { key: 'highest', label: 'En Yüksek Puan' }, { key: 'lowest', label: 'En Düşük Puan' }].map(s => (
+            <button
+              key={s.key}
+              className={`detay-reviews-sort-btn ${reviewSortBy === s.key ? 'detay-reviews-sort-btn--active' : ''}`}
+              onClick={() => setReviewSortBy(s.key)}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Review list */}
+        <div className="detay-review-list">
+          {[...reviews]
+            .sort((a, b) =>
+              reviewSortBy === 'highest' ? b.rating - a.rating
+              : reviewSortBy === 'lowest' ? a.rating - b.rating
+              : new Date(b.date) - new Date(a.date)
+            )
+            .map(review => (
+              <div key={review.id} className="detay-review-item">
+                <div className="detay-review-item__avatar">{review.avatar}</div>
+                <div className="detay-review-item__body">
+                  <div className="detay-review-item__top">
+                    <div>
+                      <Stars rating={review.rating} size={12} />
+                      {review.title && <p className="detay-review-item__title">{review.title}</p>}
+                    </div>
+                    <div className="detay-review-item__meta">
+                      <span className="detay-review-item__author">{review.author}</span>
+                      <span className="detay-review-item__date">{new Date(review.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                    </div>
+                  </div>
+                  <p className="detay-review-item__text">{review.body}</p>
+                  {review.images?.length > 0 && (
+                    <div className="detay-review-item__imgs">
+                      {review.images.map((_, i) => (
+                        <div key={i} className="detay-review-item__img-placeholder">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                          </svg>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))
+          }
         </div>
       </motion.div>
 

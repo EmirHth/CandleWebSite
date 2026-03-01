@@ -405,10 +405,11 @@ export default function HediyePage() {
       <section className="hediye-card-section">
         <div className="hediye-card-inner">
           <div className="hediye-card-visual" aria-hidden="true">
-            <div className="hediye-card-visual__card">
-              <span className="hediye-card-visual__logo">Laydora</span>
-              <span className="hediye-card-visual__amount">500 TL</span>
-            </div>
+            <img
+              src="/images/ozel-anlara-isik.png"
+              alt="Özel Anlara Işık Hediye Kartı"
+              className="hediye-card-visual__img"
+            />
           </div>
           <div className="hediye-card-body">
             <p className="hediye-card__eyebrow">Karar Veremeyenler İçin</p>

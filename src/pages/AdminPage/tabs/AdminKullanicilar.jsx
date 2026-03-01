@@ -602,24 +602,72 @@ export default function AdminKullanicilar() {
                         Henüz aktivite kaydı yok.
                       </p>
                     ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 300, overflowY: 'auto' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxHeight: 380, overflowY: 'auto' }}>
                         {logs.slice(0, 50).map(log => (
-                          <div key={log.id} style={{ display: 'flex', gap: 10, padding: '7px 0', borderBottom: '1px solid var(--adm-border)', fontSize: '0.76rem', alignItems: 'flex-start' }}>
-                            <span style={{ color: 'var(--adm-text-3)', flexShrink: 0, width: 120 }}>
-                              {new Date(log.timestamp).toLocaleString('tr-TR', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}
-                            </span>
-                            <span style={{ background: 'rgba(255,215,100,0.08)', border: '1px solid rgba(255,215,100,0.15)', color: 'rgba(255,215,100,0.8)', padding: '1px 7px', borderRadius: 100, fontSize: '0.68rem', flexShrink: 0 }}>
-                              {LOG_LABELS[log.type] || log.type}
-                            </span>
-                            {log.productName && (
-                              <span style={{ color: 'var(--adm-text-2)' }}>{log.productName}</span>
-                            )}
-                            {log.orderId && (
-                              <span style={{ color: 'var(--adm-text-2)' }}>Sipariş: {log.orderId}</span>
-                            )}
-                            {log.page && (
-                              <span style={{ color: 'var(--adm-text-3)' }}>{log.page}</span>
-                            )}
+                          <div key={log.id} style={{ padding: '10px 0', borderBottom: '1px solid var(--adm-border)', fontSize: '0.75rem' }}>
+                            {/* Header row */}
+                            <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 5 }}>
+                              <span style={{ color: 'var(--adm-text-3)', flexShrink: 0, minWidth: 120 }}>
+                                {new Date(log.timestamp).toLocaleString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                              </span>
+                              <span style={{ background: 'rgba(255,215,100,0.08)', border: '1px solid rgba(255,215,100,0.15)', color: 'rgba(255,215,100,0.8)', padding: '1px 8px', borderRadius: 100, fontSize: '0.68rem', flexShrink: 0 }}>
+                                {LOG_LABELS[log.type] || log.type}
+                              </span>
+                              {log.userFullName && (
+                                <span style={{ color: 'var(--adm-text-2)', fontWeight: 500 }}>{log.userFullName}</span>
+                              )}
+                              {log.userEmail && (
+                                <span style={{ color: 'var(--adm-text-3)' }}>· {log.userEmail}</span>
+                              )}
+                            </div>
+                            {/* Detail rows */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 3, paddingLeft: 130 }}>
+                              {/* Product view / cart events */}
+                              {log.productName && (
+                                <span style={{ color: 'var(--adm-text-2)' }}>
+                                  Ürün: <strong>{log.productName}</strong>
+                                  {log.category && <span style={{ color: 'var(--adm-text-3)' }}> ({log.category})</span>}
+                                  {log.price && <span style={{ color: 'var(--adm-text-3)' }}> — {log.price} TL</span>}
+                                  {log.quantity && <span style={{ color: 'var(--adm-text-3)' }}> × {log.quantity}</span>}
+                                </span>
+                              )}
+                              {/* Purchase details */}
+                              {log.orderId && (
+                                <span style={{ color: 'var(--adm-text-2)' }}>
+                                  Sipariş No: <strong style={{ color: 'rgba(255,215,100,0.8)' }}>{log.orderId}</strong>
+                                  {log.total != null && <span style={{ color: 'var(--adm-text-3)' }}> — Toplam: {log.total} TL</span>}
+                                  {log.paymentMethod && <span style={{ color: 'var(--adm-text-3)' }}> · {log.paymentMethod}</span>}
+                                  {log.cardLastFour && <span style={{ color: 'var(--adm-text-3)' }}> (*{log.cardLastFour})</span>}
+                                </span>
+                              )}
+                              {log.address && (
+                                <span style={{ color: 'var(--adm-text-3)' }}>
+                                  Adres: {log.address.fullName} · {log.address.phone} — {log.address.address}, {log.address.district} / {log.address.city}
+                                </span>
+                              )}
+                              {log.carrier && !log.productName && (
+                                <span style={{ color: 'var(--adm-text-3)' }}>
+                                  Kargo: {log.carrier} · Teslim: {log.estimatedDelivery || '—'}
+                                </span>
+                              )}
+                              {log.items && log.items.length > 0 && (
+                                <div style={{ color: 'var(--adm-text-3)', marginTop: 2 }}>
+                                  Ürünler: {log.items.map(i => `${i.name} ×${i.quantity} (${i.price} TL)`).join(' | ')}
+                                </div>
+                              )}
+                              {/* Promo */}
+                              {log.promoCode && (
+                                <span style={{ color: 'var(--adm-text-3)' }}>Kupon: {log.promoCode}</span>
+                              )}
+                              {/* Login / Register */}
+                              {log.email && !log.orderId && (
+                                <span style={{ color: 'var(--adm-text-3)' }}>{log.email}{log.role ? ` — Rol: ${log.role}` : ''}</span>
+                              )}
+                              {/* Page visit */}
+                              {log.page && (
+                                <span style={{ color: 'var(--adm-text-3)' }}>Sayfa: {log.page}</span>
+                              )}
+                            </div>
                           </div>
                         ))}
                       </div>

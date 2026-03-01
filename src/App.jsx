@@ -17,6 +17,10 @@ import HediyePage from './pages/HediyePage/HediyePage'
 import LoginPage from './pages/LoginPage/LoginPage'
 import AdminPage from './pages/AdminPage/AdminPage'
 import SiparislerimPage from './pages/SiparislerimPage/SiparislerimPage'
+import LansmanPage from './pages/LansmanPage/LansmanPage'
+import KategoriPage from './pages/KategoriPage/KategoriPage'
+import KokularPage from './pages/KokularPage/KokularPage'
+import MevsimlerPage from './pages/MevsimlerPage/MevsimlerPage'
 import ChatbotWidget from './components/ChatbotWidget/ChatbotWidget'
 import { CartProvider } from './context/CartContext'
 import { AuthProvider, useAuth } from './context/AuthContext'
@@ -187,6 +191,13 @@ function AppShell() {
           }
         />
         <Route path="/hediye" element={<HediyePage />} />
+        <Route path="/lansman" element={<LansmanPage />} />
+        <Route path="/kategori" element={<KategoriPage />} />
+        <Route path="/kategori/:slug" element={<KategoriPage />} />
+        <Route path="/kokular" element={<KokularPage />} />
+        <Route path="/kokular/:slug" element={<KokularPage />} />
+        <Route path="/mevsimler" element={<MevsimlerPage />} />
+        <Route path="/mevsimler/:slug" element={<MevsimlerPage />} />
         <Route
           path="/siparislerim"
           element={

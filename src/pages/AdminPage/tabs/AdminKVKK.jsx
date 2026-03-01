@@ -115,11 +115,47 @@ export default function AdminKVKK() {
     setTimeout(() => setCookieSaved(false), 2500)
   }
 
+  const [expandedLog, setExpandedLog] = useState(null)
+
+  // Look up user info from laydora_users localStorage
+  const getUser = (userId) => {
+    try {
+      const users = JSON.parse(localStorage.getItem('laydora_users') || '[]')
+      return users.find(u => String(u.id) === String(userId)) ?? null
+    } catch { return null }
+  }
+
   const filteredLogs = logs.filter(l => {
     const typeOk = !logFilter.type || l.type === logFilter.type
     const userOk = !logFilter.user || (l.userId && String(l.userId).toLowerCase().includes(logFilter.user.toLowerCase()))
     return typeOk && userOk
   })
+
+  const TYPE_COLOR = {
+    view_product: '#60a5fa',
+    add_to_cart: '#34d399',
+    remove_from_cart: '#f87171',
+    purchase: 'var(--adm-gold)',
+    page_visit: '#9ca3af',
+    login: '#a78bfa',
+    register: '#a78bfa',
+    promo_applied: '#fbbf24',
+  }
+
+  const getLogDetail = (l) => {
+    const parts = []
+    if (l.productName) parts.push(`Ürün: ${l.productName}`)
+    if (l.productId) parts.push(`ID: #${l.productId}`)
+    if (l.price != null) parts.push(`Fiyat: ₺${l.price}`)
+    if (l.category) parts.push(`Kategori: ${l.category}`)
+    if (l.page) parts.push(`Sayfa: ${l.page}`)
+    if (l.total != null) parts.push(`Toplam: ₺${l.total}`)
+    if (l.orderId) parts.push(`Sipariş: ${l.orderId}`)
+    if (l.promoCode) parts.push(`Kupon: ${l.promoCode}`)
+    if (l.quantity) parts.push(`Adet: ${l.quantity}`)
+    if (l.discount != null) parts.push(`İndirim: ₺${l.discount}`)
+    return parts
+  }
 
   const exportLogs = () => {
     const headers = ['Tarih', 'Kullanıcı ID', 'Aktivite Türü', 'Detay']
@@ -421,26 +457,182 @@ export default function AdminKVKK() {
                 <table className="adm-table">
                   <thead>
                     <tr>
-                      <th>Tarih</th><th>Kullanıcı ID</th><th>Aktivite Türü</th><th>Detay</th>
+                      <th style={{ width: 140 }}>Tarih</th>
+                      <th style={{ width: 120 }}>Kullanıcı</th>
+                      <th style={{ width: 140 }}>Aktivite</th>
+                      <th>Detay</th>
+                      <th style={{ width: 36 }}></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredLogs.slice(0, 50).map((l, i) => (
-                      <tr key={i}>
-                        <td style={{ fontSize: '0.76rem', color: 'var(--adm-text-3)', whiteSpace: 'nowrap' }}>
-                          {new Date(l.timestamp).toLocaleString('tr-TR')}
-                        </td>
-                        <td style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--adm-text-2)' }}>{l.userId ?? '—'}</td>
-                        <td>
-                          <span style={{ fontSize: '0.73rem', padding: '2px 8px', borderRadius: 4, background: 'rgba(255,255,255,0.06)', color: 'var(--adm-text-2)' }}>
-                            {LOG_LABELS[l.type] ?? l.type}
-                          </span>
-                        </td>
-                        <td style={{ fontSize: '0.76rem', color: 'var(--adm-text-3)' }}>
-                          {l.productName ?? l.page ?? '—'}
-                        </td>
-                      </tr>
-                    ))}
+                    {filteredLogs.slice(0, 50).map((l, i) => {
+                      const color = TYPE_COLOR[l.type] ?? '#9ca3af'
+                      const details = getLogDetail(l)
+                      const isExpanded = expandedLog === i
+                      return (
+                        <>
+                          <tr key={i} style={{ borderLeft: `3px solid ${color}` }}>
+                            <td style={{ fontSize: '0.74rem', color: 'var(--adm-text-3)', whiteSpace: 'nowrap' }}>
+                              {new Date(l.timestamp).toLocaleString('tr-TR')}
+                            </td>
+                            <td style={{ fontFamily: 'monospace', fontSize: '0.74rem', color: 'var(--adm-text-2)' }}>
+                              {l.userId ?? <span style={{ color: 'var(--adm-text-3)' }}>misafir</span>}
+                            </td>
+                            <td>
+                              <span style={{
+                                fontSize: '0.72rem', fontWeight: 600, padding: '2px 8px', borderRadius: 4,
+                                background: `${color}18`, color, border: `1px solid ${color}33`,
+                              }}>
+                                {LOG_LABELS[l.type] ?? l.type}
+                              </span>
+                            </td>
+                            <td>
+                              {details.length > 0 ? (
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                                  {details.map((d, j) => (
+                                    <span key={j} style={{
+                                      fontSize: '0.69rem', padding: '1px 7px', borderRadius: 4,
+                                      background: 'rgba(255,255,255,0.05)', color: 'var(--adm-text-2)',
+                                      border: '1px solid rgba(255,255,255,0.08)',
+                                    }}>{d}</span>
+                                  ))}
+                                </div>
+                              ) : (
+                                <span style={{ fontSize: '0.74rem', color: 'var(--adm-text-3)' }}>—</span>
+                              )}
+                            </td>
+                            <td>
+                              <button
+                                onClick={() => setExpandedLog(isExpanded ? null : i)}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--adm-text-3)', padding: '2px 4px', lineHeight: 1 }}
+                                title="Ham veriyi göster"
+                              >
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                                  style={{ transform: isExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+                                  <path d="m6 9 6 6 6-6"/>
+                                </svg>
+                              </button>
+                            </td>
+                          </tr>
+                          {isExpanded && (() => {
+                            const u = getUser(l.userId)
+                            return (
+                              <tr key={`${i}-expanded`} style={{ background: 'rgba(255,255,255,0.015)' }}>
+                                <td colSpan={5} style={{ padding: '10px 20px 14px' }}>
+                                  <div style={{
+                                    display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12,
+                                    background: 'rgba(0,0,0,0.18)', borderRadius: 8, padding: '14px 16px',
+                                    border: '1px solid rgba(255,255,255,0.06)',
+                                  }}>
+                                    {/* Left: User info */}
+                                    <div>
+                                      <p style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--adm-text-3)', marginBottom: 8, textTransform: 'uppercase' }}>Kullanıcı Bilgileri</p>
+                                      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                                        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                                          <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 60 }}>Ad Soyad</span>
+                                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--adm-text)' }}>
+                                            {u ? `${u.firstName ?? ''} ${u.lastName ?? ''}`.trim() || '—' : (l.userId ? `ID: ${l.userId}` : 'Misafir')}
+                                          </span>
+                                        </div>
+                                        {u?.email && (
+                                          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 60 }}>E-posta</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-2)' }}>{u.email}</span>
+                                          </div>
+                                        )}
+                                        {u?.phone && (
+                                          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 60 }}>Telefon</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-2)' }}>{u.phone}</span>
+                                          </div>
+                                        )}
+                                        {u?.isAdmin && (
+                                          <span style={{ fontSize: '0.65rem', padding: '1px 6px', borderRadius: 3, background: 'rgba(167,139,250,0.12)', color: '#a78bfa', border: '1px solid rgba(167,139,250,0.2)', display: 'inline-block', width: 'fit-content' }}>
+                                            Admin
+                                          </span>
+                                        )}
+                                        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 2 }}>
+                                          <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 60 }}>Tarih</span>
+                                          <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-2)' }}>{new Date(l.timestamp).toLocaleString('tr-TR')}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Right: Activity payload */}
+                                    <div>
+                                      <p style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.08em', color: 'var(--adm-text-3)', marginBottom: 8, textTransform: 'uppercase' }}>Aktivite Detayı</p>
+                                      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                                        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                                          <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>Eylem</span>
+                                          <span style={{
+                                            fontSize: '0.72rem', fontWeight: 600, padding: '1px 8px', borderRadius: 4,
+                                            background: `${color}15`, color, border: `1px solid ${color}30`,
+                                          }}>{LOG_LABELS[l.type] ?? l.type}</span>
+                                        </div>
+                                        {l.productName && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64, flexShrink: 0 }}>Ürün</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-text)', fontWeight: 600 }}>{l.productName}</span>
+                                          </div>
+                                        )}
+                                        {l.category && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>Kategori</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-2)' }}>{l.category}</span>
+                                          </div>
+                                        )}
+                                        {l.price != null && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>Fiyat</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-gold)', fontWeight: 600 }}>₺{l.price}</span>
+                                          </div>
+                                        )}
+                                        {l.quantity != null && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>Adet</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-2)' }}>{l.quantity}</span>
+                                          </div>
+                                        )}
+                                        {l.total != null && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>Toplam</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-gold)', fontWeight: 700 }}>₺{l.total}</span>
+                                          </div>
+                                        )}
+                                        {l.orderId && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>Sipariş</span>
+                                            <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--adm-text-2)' }}>{l.orderId}</span>
+                                          </div>
+                                        )}
+                                        {l.promoCode && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>Kupon</span>
+                                            <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: '#fbbf24' }}>{l.promoCode}</span>
+                                          </div>
+                                        )}
+                                        {l.page && !l.productName && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>Sayfa</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-2)' }}>{l.page}</span>
+                                          </div>
+                                        )}
+                                        {l.discount != null && l.discount > 0 && (
+                                          <div style={{ display: 'flex', gap: 6 }}>
+                                            <span style={{ fontSize: '0.7rem', color: 'var(--adm-text-3)', minWidth: 64 }}>İndirim</span>
+                                            <span style={{ fontSize: '0.78rem', color: 'var(--adm-text-2)' }}>₺{l.discount}</span>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            )
+                          })()}
+                        </>
+                      )
+                    })}
                   </tbody>
                 </table>
               )}
