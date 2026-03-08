@@ -3,22 +3,22 @@ import './NewProducts.css'
 
 const MENU_ITEMS = [
   {
-    link: '#',
+    link: '/urun/gece-mumu',
     text: 'Gece Mumu',
     image: '/images/gece-mumu.jpg',
   },
   {
-    link: '#',
+    link: '/urun/kis-mumu',
     text: 'Kış Koleksiyonu',
     image: '/images/kis-mumu.jpg',
   },
   {
-    link: '#',
+    link: '/urun/dogal-mum',
     text: 'Botanik Özü',
     image: '/images/dogal-mum.jpg',
   },
   {
-    link: '#',
+    link: '/urun/deniz-mumu',
     text: 'Deniz Serisi',
     image: '/images/deniz-mumu.jpg',
   },

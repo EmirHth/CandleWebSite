@@ -347,6 +347,35 @@ const products = [
     packageType: 'Özel',
     soldCount: 563,
   },
+  {
+    id: 13,
+    slug: 'kahve-mumu',
+    name: 'Kahve Mumu',
+    subtitle: 'Kahve Kokusunun Sıcaklığı',
+    price: 279,
+    originalPrice: null,
+    badge: 'Yeni',
+    category: 'Soy Mum',
+    scents: ['Kahve', 'Vanilya', 'Kakao'],
+    burnTime: '45 saat',
+    weight: '260g',
+    image: '/images/kahve-mumu.png',
+    images: ['/images/kahve-mumu.png'],
+    description:
+      'Kahve kokusunun sıcaklığıyla dolu küçük bir mutluluk. Bu mum, bulunduğu her ortamı taze kahve çekirdeklerinin eşsiz aromasıyla doldurur.',
+    longDescription:
+      'Kahve Mumu, sabahların vazgeçilmez ritüelini evinizin her köşesine taşıyan özel bir koleksiyondur. Taze çekilmiş kahve çekirdeklerinin derin ve sarıcı aroması, vanilyann tatlı sıcaklığı ve kakaonun zengin notalarıyla harmanlanan bu mum, her yakıldığında huzurlu ve samimi bir atmosfer yaratır. Kahve severler için mükemmel bir hediye seçeneği.',
+    ingredients: ['%100 Doğal Soy Mum', 'Kahve Esansiyel Yağı', 'Vanilya Özü', 'Kakao Kokusu', 'Pamuklu Fitil'],
+    rating: 4.8,
+    reviewCount: 0,
+    inStock: true,
+    stockQuantity: 50,
+    shippingThreshold: 150,
+    estimatedDeliveryDays: '2-3',
+    carrier: 'Yurtiçi',
+    packageType: 'Kutu',
+    soldCount: 0,
+  },
 ]
 
 export default products

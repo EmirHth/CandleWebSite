@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Footer.css'
 
 export default function Footer() {
@@ -18,32 +19,43 @@ export default function Footer() {
     <footer className="site-footer" aria-label="Footer">
       <div className="footer__inner">
 
-        {/* ── Left / Center: logo + nav ── */}
+        {/* ── Col 1: Logo + tagline + copyright ── */}
         <div className="footer__brand">
-          <div className="footer__logo-wrap">
+          <Link to="/" className="footer__logo-wrap">
             <img
               src="/images/LOGO.png"
               alt="Laydora"
               className="footer__logo"
               loading="lazy"
             />
-          </div>
-          <p className="footer__tagline">El yapımı premium mumlarla<br />her ana ışık katın.</p>
-
-          <nav className="footer__nav" aria-label="Footer navigasyon">
-            <a href="#" className="footer__nav-link">Koleksiyon</a>
-            <a href="#" className="footer__nav-link">Hakkımızda</a>
-            <a href="#" className="footer__nav-link">Kargo Bilgisi</a>
-            <a href="#" className="footer__nav-link">SSS</a>
-          </nav>
-
+          </Link>
+          <p className="footer__tagline">
+            El yapımı premium mumlarla<br />her ana ışık katın.
+          </p>
           <p className="footer__copy">© 2025 Laydora. Tüm hakları saklıdır.</p>
         </div>
 
-        {/* ── Divider ── */}
-        <div className="footer__divider" aria-hidden="true" />
+        {/* ── Col 2: Mağaza ── */}
+        <nav className="footer__nav-col" aria-label="Mağaza">
+          <span className="footer__nav-heading">Mağaza</span>
+          <Link to="/urunler" className="footer__nav-link">Tüm Ürünler</Link>
+          <Link to="/lansman" className="footer__nav-link">Lansman Koleksiyonu</Link>
+          <Link to="/hediye" className="footer__nav-link">Hediye Al</Link>
+          <Link to="/kategori" className="footer__nav-link">Kategoriler</Link>
+          <Link to="/kokular" className="footer__nav-link">Koku Rehberi</Link>
+        </nav>
 
-        {/* ── Right: contact form ── */}
+        {/* ── Col 3: Kurumsal ── */}
+        <nav className="footer__nav-col" aria-label="Kurumsal">
+          <span className="footer__nav-heading">Kurumsal</span>
+          <Link to="/hakkimizda" className="footer__nav-link">Hakkımızda</Link>
+          <Link to="/sss" className="footer__nav-link">Sık Sorulan Sorular</Link>
+          <Link to="/kargo" className="footer__nav-link">Kargo & İade</Link>
+          <Link to="/profil" className="footer__nav-link">Hesabım</Link>
+          <Link to="/siparislerim" className="footer__nav-link">Siparişlerim</Link>
+        </nav>
+
+        {/* ── Col 4: İletişim formu ── */}
         <div className="footer__contact">
           <span className="footer__form-eyebrow">İletişim</span>
           <h2 className="footer__form-title">Bize <em>Ulaşın</em></h2>
@@ -95,7 +107,7 @@ export default function Footer() {
                   name="message"
                   className="footer__textarea"
                   placeholder="Size nasıl yardımcı olabiliriz?"
-                  rows={5}
+                  rows={4}
                   value={form.message}
                   onChange={handleChange}
                   required

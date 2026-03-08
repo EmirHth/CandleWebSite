@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import './Hero.css'
 
 export default function Hero() {
@@ -50,17 +51,17 @@ export default function Hero() {
         </p>
 
         <div className="hero__cta-group">
-          <a href="#" className="hero__cta hero__cta--primary">
+          <Link to="/urunler" className="hero__cta hero__cta--primary">
             <span>KOLEKSİYONU KEŞFET</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
               className="hero__cta-arrow" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-          </a>
-          <a href="#" className="hero__cta hero__cta--secondary">
+          </Link>
+          <Link to="/hediye" className="hero__cta hero__cta--secondary">
             HEDİYE AL
-          </a>
+          </Link>
         </div>
 
         {/* Trust badges */}

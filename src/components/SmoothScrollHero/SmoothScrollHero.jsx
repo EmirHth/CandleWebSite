@@ -4,51 +4,35 @@ import './SmoothScrollHero.css'
 
 /* ─────────────────────────────────────────────────
    CENTER STICKY HERO
-   • Entry  : whileInView  0.82 → 1  (grows into view)
-   • Exit   : useScroll    1 → 0.85  + fade out
-   This gives the "büyüyor" effect the user sees on hover.dev
+   Scroll aşağı indikçe resim yerinde kalır ve kart
+   boyutuna kadar küçülür. Parallax resimler üzerinden geçer.
 ───────────────────────────────────────────────── */
-const CenterImage = () => {
-  const innerRef = useRef(null)
-
-  /* Exit animation — shrinks & fades as sticky elem scrolls past */
+const CenterImage = ({ containerRef }) => {
   const { scrollYProgress } = useScroll({
-    target: innerRef,
-    offset: ['end end', 'end start'],
+    target: containerRef,
+    offset: ['start start', 'end end'],
   })
-  const exitScale   = useTransform(scrollYProgress, [0, 1], [1, 0.85])
-  const exitOpacity = useTransform(scrollYProgress, [0, 1], [1, 0])
+
+  /* 0 → 0.6 arası tam boyuttan kart boyutuna küçül */
+  const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.72])
 
   return (
-    /* Entry wrapper: scale up from 0.82 → 1 when section scrolls into view */
-    <motion.div
-      initial={{ scale: 0.82 }}
-      whileInView={{ scale: 1 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {/* Exit wrapper: scroll-linked shrink + fade */}
-      <motion.div
-        ref={innerRef}
-        style={{ scale: exitScale, opacity: exitOpacity }}
-        className="ssh__center"
-      >
-        <img
-          src="/images/kis-aksami.jpg"
-          alt="Laydora Kış Akşamı – Şarap Tonlu Mum"
-          className="ssh__center-bg"
-          fetchpriority="high"
-          decoding="async"
-        />
-        <div className="ssh__center-overlay" aria-hidden="true" />
-        <div className="ssh__center-inner">
-          <p className="ssh__center-eyebrow">Laydora Koleksiyonu</p>
-          <h1 className="ssh__center-title">
-            Her Mum Bir <em>Dünya</em>
-          </h1>
-          <p className="ssh__center-sub">Kaydırarak keşfet ↓</p>
-        </div>
-      </motion.div>
+    <motion.div className="ssh__center" style={{ scale }}>
+      <img
+        src="/images/kis-aksami.jpg"
+        alt="Laydora Kış Akşamı – Şarap Tonlu Mum"
+        className="ssh__center-bg"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div className="ssh__center-overlay" aria-hidden="true" />
+      <div className="ssh__center-inner">
+        <p className="ssh__center-eyebrow">Laydora Koleksiyonu</p>
+        <h1 className="ssh__center-title">
+          Her Mum Bir <em>Dünya</em>
+        </h1>
+        <p className="ssh__center-sub">Kaydırarak keşfet ↓</p>
+      </div>
     </motion.div>
   )
 }
@@ -163,14 +147,51 @@ const ParallaxImages = () => (
    FAQ ROWS  (= hover.dev Schedule)
 ───────────────────────────────────────────────── */
 const FAQ_ITEMS = [
-  { question: 'Mumlar ne kadar süre yanar?',          category: 'Kullanım', detail: '40–50 saat' },
-  { question: 'Hangi malzemeler kullanılıyor?',        category: 'Malzeme',  detail: '%100 Doğal Soy Mum' },
-  { question: 'Mumları nasıl doğru yakmalıyım?',       category: 'Bakım',    detail: 'İlk kullanımda 2 saat' },
-  { question: 'Sipariş ve kargo süreci nasıl işler?',  category: 'Kargo',    detail: '1–3 iş günü' },
-  { question: 'İade ve değişim yapabilir miyim?',      category: 'İade',     detail: '14 gün içinde' },
+  {
+    question: 'Mumlar ne kadar süre yanar?',
+    category: 'Kullanım',
+    detail: '40–50 saat',
+    answer: 'Laydora mumları, yüksek kaliteli soy balmumu karışımımız sayesinde 40 ila 50 saat arasında verimli biçimde yanar. Fitili her kullanımdan önce 5 mm\'ye kısaltarak ve mumu her seferinde en az 2–3 saat yakarak bu süreyi uzatabilirsiniz. Havaya temas eden yüzeyin tamamen erimesini beklemek, mumu en verimli şekilde kullanmanıza yardımcı olur.',
+  },
+  {
+    question: 'Hangi malzemeler kullanılıyor?',
+    category: 'Malzeme',
+    detail: '%100 Doğal Soy Mum',
+    answer: 'Tüm mumlarımızda parafin ve petrol türevi içermeyen %100 doğal soy balmumu kullanılmaktadır. Fitillerimiz kurşunsuz pamuk ipliğinden üretilmiş olup zararlı kimyasal bırakmaz. Koku karışımlarımız ise sentetik dolgu içermeyen parfüm yağları ve doğal esansiyel yağların özel harmanlama formülüyle hazırlanmaktadır.',
+  },
+  {
+    question: 'Mumları nasıl doğru yakmalıyım?',
+    category: 'Bakım',
+    detail: 'İlk kullanımda 2–3 saat',
+    answer: 'İlk yakışta mumu en az 2–3 saat boyunca yakın; bu, mum yüzeyinin tamamının erimesini sağlayarak "tünel açılması" (tunneling) sorununu önler. Sonraki kullanımlarda fitili yaklaşık 5 mm uzunluğa kısaltın, mumu taslak olmayan düz bir yüzeye koyun ve asla 4 saatten fazla yakmayın. Mum kapağı varsa, mumu söndürdükten sonra kapağını takarak kokunun korunmasını sağlayın.',
+  },
+  {
+    question: 'Sipariş ve kargo süreci nasıl işler?',
+    category: 'Kargo',
+    detail: '1–3 iş günü',
+    answer: 'Siparişler hafta içi 10:00–17:00 saatleri arasında işleme alınır ve onaydan sonra 1–3 iş günü içinde kargoya teslim edilir. Kargo takip numaranız e-posta ile bildirilir. 500 TL ve üzeri siparişlerde kargo tamamen ücretsizdir; altındaki siparişlerde standart kargo ücreti 49,90 TL\'dir. Tüm ürünler kırılmaya karşı özel ambalajlanarak gönderilir.',
+  },
+  {
+    question: 'İade ve değişim yapabilir miyim?',
+    category: 'İade',
+    detail: '14 gün içinde',
+    answer: 'Ürünü teslim aldıktan itibaren 14 gün içinde, açılmamış ve orijinal ambalajında olması koşuluyla iade veya değişim talebinde bulunabilirsiniz. İade için destek ekibimizle iletişime geçmeniz yeterli; iade kargo bedeli Laydora tarafından karşılanır. Kişiselleştirilmiş ürünler ile kullanılmış mumlar iade kapsamı dışındadır.',
+  },
+  {
+    question: 'Hediye paketleme hizmeti var mı?',
+    category: 'Hediye',
+    detail: 'Ücretsiz',
+    answer: 'Tüm siparişlerde isteğe bağlı hediye paketleme hizmeti sunuyoruz. Sipariş aşamasında "Hediye Paketi" seçeneğini işaretleyerek özel kutu, kraft kağıt, saten kurdele ve kişisel el yazısı not kartı ekleyebilirsiniz. Bu hizmet tamamen ücretsizdir ve tüm ürünlerde geçerlidir.',
+  },
+  {
+    question: 'Mumlar sağlıklı ve güvenli mi?',
+    category: 'Güvenlik',
+    detail: 'Katkısız & Test Edilmiş',
+    answer: 'Laydora mumları %100 doğal soy balmumu, kurşunsuz pamuk fitil ve katkısız parfüm yağlarından üretilmektedir. Hiçbir ürünümüzde parafin, yapay boyar madde ya da toksik kimyasal bulunmaz. Tüm ürünler kalite kontrol testlerinden geçirilmektedir. Mumu daima gözetim altında yakın, yanıcı malzemelerin uzağında tutun ve çocukların erişemeyeceği bir yüzeyde kullanın.',
+  },
 ]
 
-const FAQItem = ({ question, category, detail }) => (
+const FAQItem = ({ question, category, detail, answer }) => (
   <motion.div
     className="ssh__faq-row"
     initial={{ y: 48, opacity: 0 }}
@@ -181,6 +202,7 @@ const FAQItem = ({ question, category, detail }) => (
     <div className="ssh__faq-left">
       <p className="ssh__faq-question">{question}</p>
       <p className="ssh__faq-category">{category}</p>
+      {answer && <p className="ssh__faq-answer">{answer}</p>}
     </div>
     <p className="ssh__faq-detail">{detail}</p>
   </motion.div>
@@ -202,10 +224,12 @@ const FAQSection = () => (
 )
 
 export default function SmoothScrollHero() {
+  const heroWrapRef = useRef(null)
+
   return (
     <div className="ssh">
-      <div className="ssh__hero-wrap">
-        <CenterImage />
+      <div className="ssh__hero-wrap" ref={heroWrapRef}>
+        <CenterImage containerRef={heroWrapRef} />
         <ParallaxImages />
       </div>
       <FAQSection />

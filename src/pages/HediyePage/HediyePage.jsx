@@ -173,8 +173,9 @@ export default function HediyePage() {
     addToCart(product, 1)
   }
   const [activePriceRange, setActivePriceRange] = useState('all')
-  const [noteText, setNoteText] = useState('')
+  const [noteText, setNoteText] = useState(() => localStorage.getItem('laydora_gift_note') || '')
   const [noteSaved, setNoteSaved] = useState(false)
+  const [selectedAmount, setSelectedAmount] = useState(null)
 
   /* Filter gift sets */
   const filteredSets = GIFT_SETS.filter((set) => {
@@ -208,8 +209,17 @@ export default function HediyePage() {
 
   const handleNoteSave = () => {
     if (!noteText.trim()) return
+    localStorage.setItem('laydora_gift_note', noteText)
     setNoteSaved(true)
     setTimeout(() => setNoteSaved(false), 3000)
+  }
+
+  const handleGiftCardPurchase = () => {
+    if (!isAuthenticated) {
+      navigate(`/login?redirect=${encodeURIComponent(location.pathname)}`)
+      return
+    }
+    navigate('/sepet')
   }
 
   return (
@@ -419,10 +429,16 @@ export default function HediyePage() {
             </p>
             <div className="hediye-card__amounts">
               {[100, 250, 500, 1000].map((amt) => (
-                <button key={amt} className="hediye-card__amount-btn">{amt} TL</button>
+                <button
+                  key={amt}
+                  className={`hediye-card__amount-btn${selectedAmount === amt ? ' hediye-card__amount-btn--active' : ''}`}
+                  onClick={() => setSelectedAmount(amt)}
+                >
+                  {amt} TL
+                </button>
               ))}
             </div>
-            <button className="hediye-card__cta">
+            <button className="hediye-card__cta" onClick={handleGiftCardPurchase}>
               Hediye Kartı Satın Al
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />

@@ -56,43 +56,36 @@ function ProductCard({ product }) {
       layout
       onClick={handleClick}
     >
-      <div className="urunler-card__image-wrap">
+      {/* Tüm içerik kart içinde — hover'da info paneli alttan kayar */}
+      <div className="urunler-card__inner">
         <img
           src={product.image}
           alt={product.name}
           className="urunler-card__img"
           loading="lazy"
         />
+
         {product.badge && (
           <span className="urunler-card__badge">{product.badge}</span>
         )}
-        <div className="urunler-card__overlay">
-          <button className="urunler-card__overlay-btn" onClick={handleClick}>
-            İncele
-          </button>
+
+        {/* Bilgi paneli: normal halde gizli, hover'da alttan açılır */}
+        <div className="urunler-card__info">
+          <p className="urunler-card__info-category">{product.category}</p>
+          <h3 className="urunler-card__info-name">{product.name}</h3>
+          <p className="urunler-card__info-subtitle">{product.subtitle}</p>
+          <div className="urunler-card__info-bottom">
+            <div className="urunler-card__info-price-row">
+              <span className="urunler-card__info-price">{product.price} TL</span>
+              {product.originalPrice && (
+                <span className="urunler-card__info-original">{product.originalPrice} TL</span>
+              )}
+            </div>
+            <button className="urunler-card__info-btn" onClick={handleAddToCart}>
+              Sepete Ekle
+            </button>
+          </div>
         </div>
-      </div>
-
-      <div className="urunler-card__body">
-        <p className="urunler-card__category">{product.category}</p>
-        <h3 className="urunler-card__name">{product.name}</h3>
-        <p className="urunler-card__subtitle">{product.subtitle}</p>
-
-        <div className="urunler-card__price-row">
-          <span className="urunler-card__price">{product.price} TL</span>
-          {product.originalPrice && (
-            <span className="urunler-card__original-price">
-              {product.originalPrice} TL
-            </span>
-          )}
-        </div>
-
-        <button
-          className="urunler-card__add-btn"
-          onClick={handleAddToCart}
-        >
-          Sepete Ekle
-        </button>
       </div>
     </motion.article>
   )
@@ -119,13 +112,37 @@ export default function UrunlerPage() {
 
   return (
     <div className="urunler-page">
-      {/* Hero */}
+      {/* Hero — editorial split layout */}
       <section className="urunler-hero">
-        <p className="urunler-hero__eyebrow">Laydora Atölyesi</p>
-        <h1 className="urunler-hero__title">Koleksiyonumuz</h1>
-        <p className="urunler-hero__desc">
-          El yapımı, doğal malzemeli mumlardan oluşan özenle seçilmiş koleksiyonumuzu keşfedin.
-        </p>
+        <div className="urunler-hero__top-line">
+          <span className="urunler-hero__eyebrow">Laydora Atölyesi</span>
+          <span className="urunler-hero__count-label">{products.length} Ürün</span>
+        </div>
+        <div className="urunler-hero__body">
+          <h1 className="urunler-hero__title">
+            Tüm<br /><em>Koleksiyon</em>
+          </h1>
+          <div className="urunler-hero__right">
+            <p className="urunler-hero__desc">
+              El yapımı, doğal malzemeli mumlardan oluşan özenle seçilmiş
+              koleksiyonumuzu keşfedin. Her mum bir hikâye anlatır.
+            </p>
+            <div className="urunler-hero__stats">
+              <div className="urunler-hero__stat">
+                <span className="urunler-hero__stat-num">100%</span>
+                <span className="urunler-hero__stat-label">Doğal Soy</span>
+              </div>
+              <div className="urunler-hero__stat">
+                <span className="urunler-hero__stat-num">El</span>
+                <span className="urunler-hero__stat-label">Yapımı</span>
+              </div>
+              <div className="urunler-hero__stat">
+                <span className="urunler-hero__stat-num">TR</span>
+                <span className="urunler-hero__stat-label">Üretim</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Filter Bar */}

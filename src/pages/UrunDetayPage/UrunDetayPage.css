@@ -4,7 +4,7 @@
 
 .detay-page {
   min-height: 100vh;
-  background-color: #09090b;
+  background-color: #0c0905;
   color: #fafafa;
   padding-top: 118px;
   font-family: 'Jost', sans-serif;
@@ -13,7 +13,7 @@
 /* ── Not found ── */
 .detay-notfound {
   min-height: 100vh;
-  background-color: #09090b;
+  background-color: #0c0905;
   color: #fafafa;
   padding-top: 180px;
   text-align: center;
@@ -96,6 +96,8 @@
   overflow: hidden;
   aspect-ratio: 4 / 5;
   background-color: #120d07;
+  position: relative;
+  cursor: zoom-in;
 }
 
 .detay-img {
@@ -103,6 +105,86 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.detay-img-wrap:hover .detay-img {
+  transform: scale(1.03);
+}
+
+/* Hover hint badge */
+.detay-img-hint {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: rgba(240, 235, 224, 0.75);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 5px 12px 5px 8px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.detay-img-wrap:hover .detay-img-hint {
+  opacity: 1;
+}
+
+/* Backdrop */
+.detay-img-preview-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 9998;
+  pointer-events: none;
+}
+
+/* Full preview overlay */
+.detay-img-preview-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* x: -50%, y: -50% set via Framer Motion style prop — no CSS transform needed */
+  z-index: 9999;
+  background: #0d0d0f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  width: min(80vw, 640px);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+.detay-img-preview-img {
+  width: 100%;
+  height: auto;
+  max-height: calc(88vh - 44px);
+  object-fit: contain;
+  display: block;
+}
+
+.detay-img-preview-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(240, 235, 224, 0.45);
+  text-align: center;
+  padding: 10px 20px;
+  letter-spacing: 0.08em;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin: 0;
 }
 
 /* ── Info column ── */
@@ -902,6 +984,12 @@
     padding-right: 20px;
   }
 
+  .detay-reviews-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
   .detay-reviews-summary {
     flex-direction: column;
     gap: 20px;
@@ -915,6 +1003,16 @@
 
   .detay-review-item__meta {
     align-items: flex-start;
+  }
+
+  .detay-review-form__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .detay-review-submit {
+    align-self: flex-end;
   }
 }
 

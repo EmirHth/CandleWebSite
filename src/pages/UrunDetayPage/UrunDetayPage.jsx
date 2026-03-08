@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import products from '../../data/products'
@@ -148,6 +148,12 @@ export default function UrunDetayPage() {
   const decrement = () => setQuantity((q) => Math.max(1, q - 1))
   const increment = () => setQuantity((q) => q + 1)
 
+  /* ── Image hover preview ── */
+  const [showPreview, setShowPreview] = useState(false)
+  const hideTimer = useRef(null)
+  const openPreview  = () => { clearTimeout(hideTimer.current); setShowPreview(true) }
+  const closePreview = () => { hideTimer.current = setTimeout(() => setShowPreview(false), 120) }
+
   return (
     <div className="detay-page">
       {/* Back button */}
@@ -177,13 +183,55 @@ export default function UrunDetayPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="detay-img-wrap">
+          <div
+            className="detay-img-wrap"
+            onMouseEnter={openPreview}
+            onMouseLeave={closePreview}
+          >
             <img
               src={product.image}
               alt={product.name}
               className="detay-img"
             />
+            <div className="detay-img-hint" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+              </svg>
+              Büyüt
+            </div>
           </div>
+
+          {/* Full preview overlay */}
+          <AnimatePresence>
+            {showPreview && (
+              <>
+                <motion.div
+                  className="detay-img-preview-backdrop"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                />
+                <motion.div
+                  className="detay-img-preview-overlay"
+                  style={{ x: '-50%', y: '-50%' }}
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  onMouseEnter={openPreview}
+                  onMouseLeave={closePreview}
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="detay-img-preview-img"
+                  />
+                  <p className="detay-img-preview-name">{product.name}</p>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         {/* Right: info */}

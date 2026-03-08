@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './FeaturedProduct.css'
 
 export default function FeaturedProduct() {
@@ -32,13 +33,13 @@ export default function FeaturedProduct() {
             <li><span>✦</span> Sınırlı Üretim</li>
           </ul>
 
-          <a href="#" className="featured__cta">
+          <Link to="/urun/yava-vitrin" className="featured__cta">
             <span>Koleksiyonu Keşfet</span>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-          </a>
+          </Link>
         </div>
 
         {/* Right: product image */}

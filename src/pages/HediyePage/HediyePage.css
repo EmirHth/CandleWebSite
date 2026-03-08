@@ -4,7 +4,7 @@
 
 .hediye-page {
   min-height: 100vh;
-  background-color: #09090b;
+  background-color: #0c0905;
   color: #fafafa;
   padding-top: 118px;
   font-family: 'Jost', sans-serif;
@@ -774,10 +774,11 @@
   transition: all 0.2s;
 }
 
-.hediye-card__amount-btn:hover {
-  border-color: rgba(210, 160, 80, 0.4);
-  color: rgba(210, 160, 80, 0.9);
-  background: rgba(210, 160, 80, 0.08);
+.hediye-card__amount-btn:hover,
+.hediye-card__amount-btn--active {
+  border-color: rgba(210, 160, 80, 0.5);
+  color: rgba(210, 160, 80, 0.95);
+  background: rgba(210, 160, 80, 0.12);
 }
 
 .hediye-card__cta {
@@ -803,9 +804,12 @@
 /* ── Mobile ── */
 @media (max-width: 640px) {
   .hediye-why { padding: 40px 20px; }
-  .hediye-filters-section { padding: 24px 20px; }
+  .hediye-filters-section { padding: 24px 16px; }
   .hediye-sets-section,
   .hediye-products-section { padding: 48px 20px; }
   .hediye-note-section { padding: 48px 20px; }
   .hediye-card-section { padding: 48px 20px 80px; }
+  .hediye-note-footer { flex-wrap: wrap; gap: 10px; }
+  .hediye-note-actions { flex-wrap: wrap; }
+  .hediye-hero { padding: 40px 20px 56px; }
 }

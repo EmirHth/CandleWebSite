@@ -1,143 +1,307 @@
 .lansm-page {
   min-height: 100vh;
-  background: #09090b;
+  background: #0c0905;
   padding: 140px 0 100px;
 }
 
 .lansm-container {
-  max-width: 1160px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 32px;
 }
 
-/* Header */
-.lansm-header {
-  text-align: center;
-  margin-bottom: 72px;
-}
-
-.lansm-header__eyebrow {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255, 215, 100, 0.65);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-
-.lansm-header__eyebrow::before,
-.lansm-header__eyebrow::after {
-  content: '';
-  width: 40px;
-  height: 1px;
-  background: rgba(255, 215, 100, 0.25);
-}
-
-.lansm-header__title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.8rem, 6vw, 4.2rem);
-  font-weight: 500;
-  color: #f0ebe0;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
-  margin: 0 0 20px;
-}
-
-.lansm-header__sub {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.9rem;
-  color: rgba(240, 235, 224, 0.45);
-  max-width: 480px;
-  margin: 0 auto;
-  line-height: 1.65;
-}
-
-/* Countdown / badge strip */
-.lansm-badge-strip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 28px;
-}
-
-.lansm-badge {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 5px 14px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 215, 100, 0.25);
-  background: rgba(255, 215, 100, 0.06);
-  color: rgba(255, 215, 100, 0.7);
-}
-
-/* Product grid */
+/* ════════════════════════════════════════════════
+   GRID — text card + product cards bir arada
+════════════════════════════════════════════════ */
 .lansm-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  align-items: start;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  .lansm-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 720px) {
   .lansm-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 460px) {
   .lansm-grid { grid-template-columns: 1fr; }
   .lansm-container { padding: 0 20px; }
 }
 
-/* Product card */
-.lansm-card {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+/* ════════════════════════════════════════════════
+   EDİTORİAL TEXT CARD — başlık grid'e entegre
+════════════════════════════════════════════════ */
+.lansm-text-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  aspect-ratio: 3 / 4;
+  padding: 24px 22px 22px;
+  border: 1px solid rgba(255, 215, 100, 0.12);
   border-radius: 14px;
+  background:
+    linear-gradient(
+      155deg,
+      rgba(38, 22, 5, 0.95) 0%,
+      rgba(22, 13, 3, 0.98) 55%,
+      rgba(30, 18, 5, 0.96) 100%
+    );
+  position: relative;
   overflow: hidden;
+  transition:
+    border-color 0.38s ease,
+    box-shadow   0.38s ease;
+}
+
+.lansm-text-card:hover {
+  border-color: rgba(210, 160, 80, 0.28);
+  box-shadow:
+    0 0 0 1px rgba(210, 160, 80, 0.06),
+    inset 0 1px 0 rgba(255, 215, 100, 0.10),
+    0 28px 64px rgba(130, 65, 5, 0.24);
+}
+
+/* Amber yatay aksan çizgisi — üstte */
+.lansm-text-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(210, 160, 80, 0.45) 30%,
+    rgba(255, 200, 80, 0.65) 50%,
+    rgba(210, 160, 80, 0.45) 70%,
+    transparent 100%
+  );
+}
+
+/* Büyük dekoratif ✦ — sağ altta */
+.lansm-text-card::after {
+  content: '✦';
+  position: absolute;
+  bottom: -32px;
+  right: -14px;
+  font-size: 180px;
+  line-height: 1;
+  color: rgba(255, 215, 100, 0.045);
+  pointer-events: none;
+  font-family: 'Cormorant Garamond', serif;
+  transition: color 0.38s ease;
+}
+
+.lansm-text-card:hover::after {
+  color: rgba(255, 215, 100, 0.07);
+}
+
+/* ── Top area ── */
+.lansm-tc__top {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lansm-tc__eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(210, 160, 80, 0.55);
+}
+
+.lansm-tc__accent-line {
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(210, 160, 80, 0.6), transparent);
+}
+
+/* ── Title wrap — flex:1 ile orta alanı doldurur, h1'i dikey ortalar ── */
+.lansm-tc__title-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.lansm-tc__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4.5vw, 52px);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: rgba(255, 248, 230, 0.93);
+  margin: 0;
+}
+
+.lansm-tc__title em {
+  font-style: italic;
+  color: rgba(210, 160, 80, 0.88);
+}
+
+/* ── Bottom area ── */
+.lansm-tc__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 215, 100, 0.08);
+  padding-top: 16px;
+}
+
+.lansm-tc__desc {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(255, 225, 172, 0.32);
+  margin: 0;
+}
+
+.lansm-tc__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lansm-tc__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(210, 160, 80, 0.40);
+}
+
+.lansm-tc__meta-dot {
+  font-size: 7px;
+  color: rgba(210, 160, 80, 0.55);
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════════════
+   KART WRAPPER — grid hücresi, kart içinde genişler
+════════════════════════════════════════════════ */
+.lansm-card-wrap {
+  position: relative;
+  aspect-ratio: 3 / 4;
+}
+
+/* ════════════════════════════════════════════════
+   ÜRÜN KARTI
+   Mekanizma:
+   1. Normal : wrapper'ı tam doldurur (width:100%)
+   2. Hover  : width:172% — gerçek layout genişliği değişir
+              Resim inset:0 → 1.72x geniş container'ı cover ile doldurur
+              object-fit:cover daha geniş crop alır → kırpılan kısımlar görünür, gerilme yok
+   3. Bilgi  : left:0; width:58% → sol alanı kaplar, sağda resim tam görünür
+   4. Resim  : tüm kartı doldurur — ne sol ne sağ siyah alan
+════════════════════════════════════════════════ */
+.lansm-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
   cursor: pointer;
-  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  background: #130e07;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 1;
+  transition:
+    width      0.56s cubic-bezier(0.22, 1, 0.36, 1),
+    transform  0.40s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.50s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.32s ease;
 }
 
 .lansm-card:hover {
-  border-color: rgba(255, 215, 100, 0.2);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  width: 172%;        /* gerçek layout genişlemesi — gerilme yok */
+  transform: translateY(-5px);
+  z-index: 20;
+  box-shadow:
+    0 26px 60px rgba(120, 55, 5, 0.30),
+    0 8px 20px  rgba(0, 0, 0, 0.52);
+  border-color: rgba(210, 160, 80, 0.20);
 }
 
+/* ── Görsel — tüm kartı doldurur, hover'da kart genişlediğinde
+   object-fit:cover daha geniş alana yayılır → kırpılan kısımlar görünür ── */
 .lansm-card__img-wrap {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  background: #111113;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .lansm-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.60s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lansm-card:hover .lansm-card__img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
+/* Vignette */
+.lansm-card__img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(8, 4, 1, 0.60) 0%,
+    transparent 50%
+  );
+}
+
+/* Amber glow */
+.lansm-card__img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 55% 50% at 50% 36%,
+    rgba(255, 148, 22, 0.22) 0%,
+    rgba(230, 95, 8, 0.10) 35%,
+    transparent 62%
+  );
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.50s ease;
+}
+
+.lansm-card:hover .lansm-card__img-wrap::after {
+  opacity: 1;
+}
+
+/* Rozet */
 .lansm-card__badge {
   position: absolute;
-  top: 14px;
-  left: 14px;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
   font-family: 'Jost', sans-serif;
-  font-size: 0.62rem;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 4px;
@@ -145,100 +309,255 @@
 }
 
 .lansm-card__badge--yeni {
-  background: rgba(255, 215, 100, 0.15);
-  border: 1px solid rgba(255, 215, 100, 0.35);
-  color: rgba(255, 215, 100, 0.9);
+  background: rgba(255, 215, 100, 0.14);
+  border: 1px solid rgba(255, 215, 100, 0.32);
+  color: rgba(255, 215, 100, 0.92);
 }
 
 .lansm-card__badge--sinirli {
-  background: rgba(180, 100, 40, 0.2);
-  border: 1px solid rgba(180, 100, 40, 0.4);
+  background: rgba(180, 100, 40, 0.18);
+  border: 1px solid rgba(180, 100, 40, 0.38);
   color: #e0a060;
 }
 
+/* İncele ikonu */
+.lansm-card__side-actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity   0.30s ease 0.25s,
+    transform 0.30s ease 0.25s;
+}
+
+.lansm-card:hover .lansm-card__side-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lansm-card__action-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 225, 172, 0.28);
+  background: rgba(18, 11, 4, 0.75);
+  color: rgba(255, 225, 172, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+
+.lansm-card__action-btn:hover {
+  background: rgba(210, 148, 28, 0.22);
+  border-color: rgba(210, 148, 28, 0.60);
+  color: rgba(255, 210, 80, 1);
+}
+
+/* ════════════════════════════════════════════════
+   BİLGİ PANELİ
+   Sol %58'i kaplar → sağ %42 resim görünür
+   Hover'da aşağıdan kayarak açılır
+════════════════════════════════════════════════ */
 .lansm-card__info {
-  padding: 18px 20px 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 58%;       /* sol %58 → expanded kartta ≈ orijinal kart genişliği */
+  z-index: 2;
+  background: transparent;
+  padding: 20px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transform: translateY(100%);
+  transition: transform 0.56s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.lansm-card__category {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(240, 235, 224, 0.35);
-  margin-bottom: 6px;
+.lansm-card:hover .lansm-card__info {
+  transform: translateY(0);
 }
 
-.lansm-card__name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #f0ebe0;
-  margin: 0 0 3px;
-  line-height: 1.2;
-}
-
-.lansm-card__subtitle {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.75rem;
-  color: rgba(240, 235, 224, 0.4);
+.lansm-card__info-top {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   margin-bottom: 14px;
 }
 
-.lansm-card__footer {
+/* Kategori — 1. çıkan */
+.lansm-card__category {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(210, 160, 80, 0.70);
+  transform: translateY(18px);
+  opacity: 0;
+  transition:
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
+    opacity   0.34s ease 0.12s;
+}
+
+.lansm-card:hover .lansm-card__category {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* İsim — 2. çıkan */
+.lansm-card__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+  font-weight: 400;
+  color: rgba(255, 248, 230, 0.95);
+  line-height: 1.15;
+  margin: 0;
+  transform: translateY(22px);
+  opacity: 0;
+  transition:
+    transform 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.18s,
+    opacity   0.36s ease 0.18s;
+}
+
+.lansm-card:hover .lansm-card__name {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Subtitle — 3. çıkan */
+.lansm-card__subtitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  color: rgba(240, 235, 224, 0.30);
+  transform: translateY(22px);
+  opacity: 0;
+  transition:
+    transform 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.22s,
+    opacity   0.36s ease 0.22s;
+}
+
+.lansm-card:hover .lansm-card__subtitle {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Fiyat + Sepete Ekle — 4. çıkan */
+.lansm-card__info-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-top: 1px solid rgba(255, 215, 100, 0.08);
+  padding-top: 12px;
+  transform: translateY(24px);
+  opacity: 0;
+  transition:
+    transform 0.46s cubic-bezier(0.22, 1, 0.36, 1) 0.27s,
+    opacity   0.38s ease 0.27s;
+}
+
+.lansm-card:hover .lansm-card__info-bottom {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.lansm-card__price-group {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
 .lansm-card__price {
   font-family: 'Jost', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: rgba(255, 215, 100, 0.85);
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255, 215, 100, 0.92);
 }
 
 .lansm-card__original-price {
   font-family: 'Jost', sans-serif;
-  font-size: 0.78rem;
-  color: rgba(240, 235, 224, 0.3);
+  font-size: 0.72rem;
+  color: rgba(240, 235, 224, 0.28);
   text-decoration: line-through;
-  margin-left: 6px;
 }
 
-.lansm-card__arrow {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 215, 100, 0.2);
-  background: rgba(255, 215, 100, 0.05);
+.lansm-card__cart-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: rgba(255, 215, 100, 0.6);
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  gap: 6px;
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(12, 9, 5, 0.96);
+  background: linear-gradient(
+    90deg,
+    rgba(210, 148, 28, 0.97),
+    rgba(240, 180, 55, 0.97)
+  );
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: filter 0.18s, transform 0.16s;
+  flex-shrink: 0;
 }
 
-.lansm-card:hover .lansm-card__arrow {
-  background: rgba(255, 215, 100, 0.1);
-  border-color: rgba(255, 215, 100, 0.4);
-  color: rgba(255, 215, 100, 0.9);
+.lansm-card__cart-btn:hover {
+  filter: brightness(1.12);
+  transform: scale(1.05);
 }
 
-/* ── Mobile header fix ── */
+/* ── Mobile ── */
 @media (max-width: 480px) {
-  .lansm-page {
-    padding: 120px 0 80px;
+  .lansm-page { padding: 120px 0 80px; }
+  .lansm-text-card {
+    aspect-ratio: auto;
+    min-height: 260px;
   }
+}
 
-  .lansm-header {
-    margin-bottom: 48px;
+/* ── Touch cihazlar — hover yok, statik görünüm ── */
+@media (hover: none) {
+  .lansm-card {
+    width: 100% !important;
+    transform: none !important;
   }
-
-  .lansm-badge-strip {
-    flex-wrap: wrap;
-    gap: 6px;
+  .lansm-card__info {
+    transform: translateY(0) !important;
+    width: 100% !important;
+    top: auto;
+    height: 50%;
+    transition: none;
+    background: linear-gradient(
+      to top,
+      rgba(13, 9, 4, 0.98) 0%,
+      rgba(13, 9, 4, 0.75) 70%,
+      transparent 100%
+    );
+  }
+  .lansm-card__category,
+  .lansm-card__name,
+  .lansm-card__subtitle,
+  .lansm-card__info-bottom {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    transition: none;
+  }
+  .lansm-card__badge { transform: none !important; }
+  .lansm-card__side-actions {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+  .lansm-card:active {
+    transform: scale(0.98) !important;
   }
 }
 

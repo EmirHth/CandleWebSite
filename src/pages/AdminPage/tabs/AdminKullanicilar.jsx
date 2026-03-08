@@ -530,7 +530,8 @@ export default function AdminKullanicilar() {
                     <select
                       value={segmentOverrides[selectedUser.id] || ''}
                       onChange={e => setSegmentOverrides(prev => ({ ...prev, [selectedUser.id]: e.target.value || undefined }))}
-                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--adm-border)', borderRadius: 6, padding: '4px 8px', color: 'var(--adm-text)', fontFamily: 'Jost,sans-serif', fontSize: '0.75rem', outline: 'none' }}
+                      className="adm-settings-select"
+                      style={{ minWidth: 'unset', padding: '4px 8px', fontSize: '0.75rem' }}
                     >
                       <option value="">Otomatik</option>
                       {CUSTOMER_SEGMENTS.map(s => (

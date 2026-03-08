@@ -86,13 +86,6 @@ export default function FilteredListingPage({ title, eyebrow, desc, products, pi
 
   return (
     <div className="flp">
-      {/* Hero */}
-      <section className="flp-hero">
-        {eyebrow && <p className="flp-hero__eyebrow">{eyebrow}</p>}
-        <h1 className="flp-hero__title">{title}</h1>
-        {desc && <p className="flp-hero__desc">{desc}</p>}
-      </section>
-
       {/* Filter Bar */}
       <div className="flp-filter-bar">
         <div className="flp-filter-bar__inner">
@@ -130,7 +123,11 @@ export default function FilteredListingPage({ title, eyebrow, desc, products, pi
           <p className="flp-empty">Bu kategoride henüz ürün bulunmuyor.</p>
         ) : (
           <>
-            <p className="flp-count">{sorted.length} ürün</p>
+            <div className="flp-page-id">
+              {eyebrow && <span className="flp-page-id__eyebrow">{eyebrow}</span>}
+              <span className="flp-page-id__title">{title}</span>
+              <span className="flp-page-id__count">{sorted.length} ürün</span>
+            </div>
             <AnimatePresence mode="wait">
               <motion.div
                 key={sortValue + pills.find(p => p.active)?.href}

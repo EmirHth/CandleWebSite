@@ -23,7 +23,9 @@
       "Bash(cd C:\\\\Users\\\\emirh\\\\OneDrive\\\\Desktop\\\\Candle:*)",
       "Bash(head:*)",
       "Bash(ls:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "WebFetch(domain:webdevpuneet.com)",
+      "WebFetch(domain:bbbootstrap.com)"
     ]
   }
 }

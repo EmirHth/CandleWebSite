@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Navbar from './components/Navbar/Navbar'
@@ -21,13 +20,13 @@ import LansmanPage from './pages/LansmanPage/LansmanPage'
 import KategoriPage from './pages/KategoriPage/KategoriPage'
 import KokularPage from './pages/KokularPage/KokularPage'
 import MevsimlerPage from './pages/MevsimlerPage/MevsimlerPage'
+import HakkimizdaPage from './pages/HakkimizdaPage/HakkimizdaPage'
+import SSSPage from './pages/SSSPage/SSSPage'
+import KargoPage from './pages/KargoPage/KargoPage'
 import ChatbotWidget from './components/ChatbotWidget/ChatbotWidget'
 import { CartProvider } from './context/CartContext'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import './App.css'
-
-/* ── Navbar toplam yüksekliği (announcement 46px + bar 72px) ── */
-const NAVBAR_H = 118
 
 /* ── Akıcı scroll-reveal wrapper ── */
 function Reveal({ children }) {
@@ -45,76 +44,6 @@ function Reveal({ children }) {
       {children}
     </motion.div>
   )
-}
-
-/* ══════════════════════════════════════════════════════════
-   SECTION-BY-SECTION SCROLL HOOK
-══════════════════════════════════════════════════════════ */
-function useSectionScroll() {
-  const location = useLocation()
-  const isHome = location.pathname === '/'
-
-  useEffect(() => {
-    if (!isHome) return
-
-    const SEL      = ['.hero', '.new-products', '.featured', '.c3d', '.lansm', '.lansm-row-2', '.ssh', '.site-footer']
-    const COOLDOWN = 900
-    let lastSnap   = 0
-    let sections   = []
-
-    const init = () => {
-      sections = SEL.map(s => document.querySelector(s)).filter(Boolean)
-    }
-
-    const currentIdx = () => {
-      const threshold = window.innerHeight * 0.35
-      let best = 0
-      sections.forEach((s, i) => {
-        if (s.getBoundingClientRect().top <= threshold) best = i
-      })
-      return best
-    }
-
-    const goTo = (idx) => {
-      if (idx < 0 || idx >= sections.length) return
-      lastSnap = Date.now()
-
-      const sec    = sections[idx]
-      const top    = sec.getBoundingClientRect().top + window.scrollY
-      const target = idx === 0 ? 0 : Math.max(0, top - NAVBAR_H)
-
-      window.scrollTo({ top: target, behavior: 'smooth' })
-    }
-
-    const onWheel = (e) => {
-      init()
-      if (!sections.length) return
-
-      const idx = currentIdx()
-      const sec = sections[idx]
-
-      if (sec && sec.classList.contains('ssh')) {
-        const rect     = sec.getBoundingClientRect()
-        const atBottom = window.scrollY + window.innerHeight >= sec.offsetTop + sec.offsetHeight - 80
-        const atTop    = rect.top >= NAVBAR_H - 20
-
-        if (e.deltaY > 0 && !atBottom) return
-        if (e.deltaY < 0 && !atTop)   return
-      }
-
-      if (Date.now() - lastSnap < COOLDOWN) {
-        e.preventDefault()
-        return
-      }
-
-      e.preventDefault()
-      goTo(idx + (e.deltaY > 0 ? 1 : -1))
-    }
-
-    init()
-    window.addEventListener('wheel', onWheel, { passive: false })
-    return () => window.removeEventListener('wheel', onWheel)
-  }, [isHome])
 }
 
 /* ── Route guards ── */
@@ -143,8 +72,6 @@ function AdminRoute({ children }) {
 
 /* ── Homepage ── */
 function HomePage() {
-  useSectionScroll()
-
   return (
     <main>
       <Hero />
@@ -160,7 +87,6 @@ function HomePage() {
 
 /* ── AppShell — single Navbar above all routes ── */
 function AppShell() {
-  useSectionScroll()
   const location = useLocation()
   const isAdminRoute = location.pathname.startsWith('/admin')
   const isLoginRoute = location.pathname === '/login'
@@ -198,6 +124,9 @@ function AppShell() {
         <Route path="/kokular/:slug" element={<KokularPage />} />
         <Route path="/mevsimler" element={<MevsimlerPage />} />
         <Route path="/mevsimler/:slug" element={<MevsimlerPage />} />
+        <Route path="/hakkimizda" element={<HakkimizdaPage />} />
+        <Route path="/sss" element={<SSSPage />} />
+        <Route path="/kargo" element={<KargoPage />} />
         <Route
           path="/siparislerim"
           element={

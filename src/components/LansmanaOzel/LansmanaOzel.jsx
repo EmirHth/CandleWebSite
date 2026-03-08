@@ -1,7 +1,8 @@
+import { Link } from 'react-router-dom'
 import './LansmanaOzel.css'
 
 /* Two separate product rows, stacked vertically */
-function ProductRow({ image, alt, badge, title, titleEm, tagline, description, details, flipped, extraClass }) {
+function ProductRow({ image, alt, badge, title, titleEm, tagline, description, details, flipped, extraClass, slug }) {
   return (
     <div className={`lansm__row${flipped ? ' lansm__row--flipped' : ''}${extraClass ? ' ' + extraClass : ''}`}>
 
@@ -32,13 +33,13 @@ function ProductRow({ image, alt, badge, title, titleEm, tagline, description, d
             <li key={i}><span>✦</span> {d}</li>
           ))}
         </ul>
-        <a href="#" className="lansm__cta">
+        <Link to={`/urun/${slug}`} className="lansm__cta">
           <span>Hemen Satın Al</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
-        </a>
+        </Link>
       </div>
 
     </div>
@@ -64,6 +65,7 @@ export default function LansmanaOzel() {
         description="Taze hibisküs notalarıyla hazırlanmış bu özel mum, baharın canlılığını evinize taşır. Doğal soy balmumu ile üretilmiş, sınırlı sayıda."
         details={['El Yapımı', 'Doğal Soy Mum', 'Hibisküs Esansı', 'Sınırlı Üretim']}
         flipped={false}
+        slug="hibiskus"
       />
 
       {/* Spacer between rows */}
@@ -80,6 +82,7 @@ export default function LansmanaOzel() {
         description="Laydora'nın imzalı tasarım serisinden eşsiz bir parça. Her detayı özenle işlenmiş, sanatsal formuyla sadece lansmana özel üretilmiştir."
         details={['Koleksiyoner Serisi', 'Premium Kalıp', 'El İşçiliği', 'Numaralı Üretim']}
         flipped={true}
+        slug="adsiz-koleksiyon"
       />
 
     </section>

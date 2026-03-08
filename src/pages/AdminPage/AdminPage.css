@@ -1175,6 +1175,7 @@
   appearance: none; cursor: pointer;
   font-family: 'Jost', sans-serif; outline: none;
 }
+.adm-status-select option { background: #141416; color: var(--adm-text); }
 
 /* ── Badges ── */
 .adm-badge {
@@ -1292,6 +1293,7 @@
 }
 .adm-search::placeholder { color: var(--adm-text-3); }
 .adm-search:focus { border-color: rgba(240,174,50,0.28); background: rgba(255,255,255,0.05); }
+.adm-search option { background: #141416; color: var(--adm-text); }
 
 .adm-filter-pills { display: flex; gap: 5px; flex-wrap: wrap; }
 
@@ -1436,6 +1438,7 @@
   border-color: rgba(240,174,50,0.3);
   background: rgba(255,255,255,0.05);
 }
+.adm-form-field select option { background: #141416; color: var(--adm-text); }
 .adm-form-field textarea { min-height: 76px; }
 
 .adm-form-field input[type="checkbox"] { width: 16px; height: 16px; padding: 0; cursor: pointer; }
@@ -1922,6 +1925,7 @@
   min-width: 180px;
 }
 .adm-settings-select:focus { border-color: rgba(240,174,50,0.3); }
+.adm-settings-select option { background: #141416; color: var(--adm-text); }
 
 /* ══════════════════════════════════════════
    RESPONSIVE
@@ -2086,6 +2090,7 @@
 .adm-return-form textarea:focus {
   border-color: rgba(240,174,50,0.3);
 }
+.adm-return-form select option { background: #141416; color: var(--adm-text); }
 
 .adm-return-form textarea {
   resize: none;

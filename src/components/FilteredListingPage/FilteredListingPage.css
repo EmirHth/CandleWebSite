@@ -4,53 +4,56 @@
 
 .flp {
   min-height: 100vh;
-  background-color: #09090b;
+  background-color: #0c0905;
   color: #fafafa;
   padding-top: 118px;
   font-family: 'Jost', sans-serif;
 }
 
-/* ── Hero ── */
-.flp-hero {
-  text-align: center;
-  padding: 64px 24px 52px;
-  border-bottom: 1px solid rgba(255, 225, 172, 0.08);
+/* ── Page Identity (replaces hero) ── */
+.flp-page-id {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
 }
 
-.flp-hero__eyebrow {
+.flp-page-id__eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(210, 160, 80, 0.55);
+  flex-shrink: 0;
+}
+
+.flp-page-id__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(250, 250, 250, 0.82);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.flp-page-id__count {
   font-family: 'Jost', sans-serif;
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(210, 160, 80, 0.9);
-  margin-bottom: 16px;
-}
-
-.flp-hero__title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(40px, 6vw, 72px);
   font-weight: 400;
-  letter-spacing: -0.01em;
-  color: #fafafa;
-  line-height: 1.05;
-  margin-bottom: 20px;
-}
-
-.flp-hero__desc {
-  font-family: 'Jost', sans-serif;
-  font-size: 15px;
-  font-weight: 300;
-  color: rgba(255, 225, 172, 0.55);
-  max-width: 480px;
-  margin: 0 auto;
-  line-height: 1.7;
+  letter-spacing: 0.08em;
+  color: rgba(255, 225, 172, 0.28);
+  text-transform: uppercase;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 /* ── Filter Bar ── */
 .flp-filter-bar {
   border-bottom: 1px solid rgba(255, 225, 172, 0.08);
-  background-color: #09090b;
+  background-color: #0c0905;
   position: sticky;
   top: 118px;
   z-index: 10;
@@ -151,14 +154,6 @@
   padding: 40px 32px 100px;
 }
 
-.flp-count {
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  color: rgba(255, 225, 172, 0.35);
-  margin-bottom: 28px;
-  text-transform: uppercase;
-}
 
 .flp-empty {
   font-size: 15px;
@@ -201,16 +196,76 @@
   background-color: #120d07;
 }
 
+/* ── Karanlık vignette: ortam koyulaşıyor, merkez (mum) açık kalıyor ── */
+.flp-card__image-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 62% 68% at 50% 44%,
+    transparent 0%,
+    transparent 28%,
+    rgba(4, 2, 1, 0.52) 58%,
+    rgba(4, 2, 1, 0.90) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.75s ease;
+}
+
+.flp-card:hover .flp-card__image-wrap::before {
+  opacity: 1;
+}
+
+/* ── Sıcak amber alev parıltısı: karanlıkta mumun ışığı ── */
+.flp-card__image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 52% 52% at 50% 38%,
+    rgba(255, 148, 22, 0.30) 0%,
+    rgba(240, 100, 10, 0.18) 32%,
+    rgba(170, 55, 5, 0.07) 56%,
+    transparent 72%
+  );
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.65s ease;
+}
+
+.flp-card:hover .flp-card__image-wrap::after {
+  opacity: 1;
+  animation: flp-flicker 2.8s ease-in-out infinite;
+}
+
+/* Alev titreme keyframe'i */
+@keyframes flp-flicker {
+  0%,  100% { opacity: 1;    transform: scale(1)    translateY(0);   }
+  18%        { opacity: 0.80; transform: scale(0.95) translateY(2px); }
+  34%        { opacity: 1;    transform: scale(1.05) translateY(-1px);}
+  54%        { opacity: 0.87; transform: scale(0.97) translateY(1px); }
+  72%        { opacity: 1;    transform: scale(1.03) translateY(-1px);}
+  88%        { opacity: 0.91; transform: scale(0.98) translateY(1px); }
+}
+
 .flp-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.75s ease;
 }
 
 .flp-card:hover .flp-card__img {
-  transform: scale(1.06);
+  transform: scale(1.04);
+  /* Görüntüyü karanlık ortamdaki parlayan mum gibi ısıt */
+  filter: brightness(1.14) saturate(1.40) sepia(0.10);
 }
 
 .flp-card__badge {
@@ -226,20 +281,19 @@
   background: rgba(210, 160, 80, 0.95);
   padding: 4px 10px;
   border-radius: 4px;
-  z-index: 2;
+  z-index: 4;
 }
 
 .flp-card__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(9, 9, 11, 0.55);
+  background: transparent;   /* karanlık efekti ::before hallediyor */
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  backdrop-filter: blur(2px);
-  z-index: 3;
+  transition: opacity 0.4s ease;
+  z-index: 5;
 }
 
 .flp-card:hover .flp-card__overlay {
@@ -252,19 +306,22 @@
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #fafafa;
-  border: 1px solid rgba(255, 225, 172, 0.5);
-  background: transparent;
+  color: rgba(255, 248, 230, 0.95);
+  border: 1px solid rgba(255, 200, 100, 0.55);
+  background: rgba(10, 6, 2, 0.55);
   padding: 11px 28px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.22s ease;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 18px rgba(210, 120, 20, 0.18);
 }
 
 .flp-card__overlay-btn:hover {
-  background: rgba(210, 160, 80, 0.15);
-  border-color: rgba(210, 160, 80, 0.8);
-  color: rgba(210, 160, 80, 0.95);
+  background: rgba(210, 140, 30, 0.22);
+  border-color: rgba(255, 185, 70, 0.85);
+  color: rgba(255, 210, 100, 1);
+  box-shadow: 0 0 26px rgba(255, 150, 30, 0.30);
 }
 
 .flp-card__body {
@@ -375,9 +432,5 @@
 
   .flp-grid-wrapper {
     padding: 28px 16px 80px;
-  }
-
-  .flp-hero {
-    padding: 48px 16px 40px;
   }
 }

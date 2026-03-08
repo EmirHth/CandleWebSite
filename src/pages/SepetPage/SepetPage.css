@@ -580,6 +580,24 @@
 }
 
 @media (max-width: 600px) {
+  .sp-cmodal-header {
+    padding: 18px 18px 0;
+  }
+
+  .sp-cmodal-stepper {
+    padding: 16px 18px 0;
+  }
+
+  .sp-cmodal-body {
+    padding: 16px 18px;
+  }
+
+  .sp-cmodal-footer {
+    padding: 14px 18px;
+  }
+}
+
+@media (max-width: 600px) {
   .sp-page {
     padding: 120px 0 60px;
   }
@@ -692,21 +710,23 @@
 
 .sp-cmodal-step {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex: 1;
   font-size: 0.72rem;
   color: rgba(240, 235, 224, 0.3);
   font-family: 'Jost', sans-serif;
   position: relative;
+  text-align: center;
 }
 
 .sp-cmodal-step:not(:last-child)::after {
   content: '';
   position: absolute;
   top: 13px;
-  left: calc(26px + 8px);
-  right: 0;
+  left: calc(50% + 13px);
+  right: calc(-50% + 13px);
   height: 1px;
   background: rgba(255, 255, 255, 0.1);
 }
@@ -794,6 +814,7 @@
 .sp-cform-field textarea:focus {
   border-color: rgba(255, 215, 100, 0.4);
 }
+.sp-cform-field select option { background: #141416; color: #f0ebe0; }
 
 .sp-cform-field textarea {
   resize: vertical;
