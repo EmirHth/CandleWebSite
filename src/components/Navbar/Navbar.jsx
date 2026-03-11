@@ -235,8 +235,8 @@ export default function Navbar() {
                     onMouseEnter={() => item.dropdown && openDropdown(item.label)}
                     onMouseLeave={() => item.dropdown && closeDropdown()}
                   >
-                    <a
-                      href={item.href}
+                    <Link
+                      to={item.href}
                       className="navbar__nav-link"
                       role="menuitem"
                       aria-haspopup={!!item.dropdown}
@@ -244,7 +244,7 @@ export default function Navbar() {
                     >
                       <span className="navbar__nav-text">{item.label}</span>
                       {item.dropdown && <ChevronDown />}
-                    </a>
+                    </Link>
 
                     {/* Dropdown panel */}
                     {item.dropdown && (
@@ -309,13 +309,13 @@ export default function Navbar() {
                             </ul>
                             {item.viewAll && (
                               <div className="navbar__dropdown-footer">
-                                <a href="#" className="navbar__dropdown-viewall">
+                                <Link to={item.href} className="navbar__dropdown-viewall">
                                   {item.viewAll}
                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                                     <path d="M5 12h14M12 5l7 7-7 7" />
                                   </svg>
-                                </a>
+                                </Link>
                               </div>
                             )}
                           </>
@@ -538,7 +538,7 @@ export default function Navbar() {
                     </ul>
                   </>
                 ) : (
-                  <a href={item.href} className="mobile-menu__link">{item.label}</a>
+                  <Link to={item.href} className="mobile-menu__link" onClick={() => setMobileOpen(false)}>{item.label}</Link>
                 )}
               </li>
             ))}
@@ -555,9 +555,9 @@ export default function Navbar() {
           {!isAuthenticated && (
             <button className="mobile-menu__footer-link" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', textAlign: 'left' }} onClick={() => { setMobileOpen(false); navigate('/login') }}>Giriş Yap</button>
           )}
-          <a href="#" className="mobile-menu__footer-link">Hakkımızda</a>
-          <a href="#" className="mobile-menu__footer-link">İletişim</a>
-          <a href="#" className="mobile-menu__footer-link">Yardım</a>
+          <Link to="/hakkimizda" className="mobile-menu__footer-link" onClick={() => setMobileOpen(false)}>Hakkımızda</Link>
+          <Link to="/hakkimizda" className="mobile-menu__footer-link" onClick={() => setMobileOpen(false)}>İletişim</Link>
+          <Link to="/sss" className="mobile-menu__footer-link" onClick={() => setMobileOpen(false)}>Yardım</Link>
         </footer>
       </aside>
     </>

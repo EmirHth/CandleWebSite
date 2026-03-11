@@ -82,7 +82,7 @@
   font-size: clamp(14px, 1.6vw, 17px);
   font-weight: 300;
   line-height: 1.75;
-  color: rgba(255, 225, 172, 0.45);
+  color: rgba(255, 225, 172, 0.72);
   max-width: 480px;
   margin: 0;
 }
@@ -121,7 +121,7 @@
   font-size: 15px;
   font-weight: 300;
   line-height: 1.9;
-  color: rgba(255, 225, 172, 0.45);
+  color: rgba(255, 225, 172, 0.72);
   margin: 0 0 20px;
   max-width: 520px;
 }
@@ -210,7 +210,7 @@
   font-size: 13px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(255, 225, 172, 0.38);
+  color: rgba(255, 225, 172, 0.70);
   margin: 0;
 }
 
@@ -359,7 +359,7 @@
 }
 
 .about-contact__item-value--muted {
-  color: rgba(255, 225, 172, 0.35);
+  color: rgba(255, 225, 172, 0.62);
   font-size: 13px;
 }
 
@@ -377,7 +377,7 @@
   font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(255, 225, 172, 0.35);
+  color: rgba(255, 225, 172, 0.62);
 }
 
 .about-social__links {
@@ -465,7 +465,7 @@
   font-size: 14px;
   font-weight: 300;
   line-height: 1.7;
-  color: rgba(255, 225, 172, 0.38);
+  color: rgba(255, 225, 172, 0.68);
   margin: 0;
 }
 

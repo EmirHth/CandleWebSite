@@ -111,7 +111,7 @@
 
 .lansm-tc__eyebrow {
   font-family: 'Jost', sans-serif;
-  font-size: 8.5px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.34em;
   text-transform: uppercase;
@@ -160,7 +160,7 @@
   font-size: 11px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(255, 225, 172, 0.32);
+  color: rgba(255, 225, 172, 0.60);
   margin: 0;
 }
 
@@ -179,7 +179,7 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(210, 160, 80, 0.40);
+  color: rgba(210, 160, 80, 0.62);
 }
 
 .lansm-tc__meta-dot {
@@ -339,8 +339,8 @@
 }
 
 .lansm-card__action-btn {
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid rgba(255, 225, 172, 0.28);
   background: rgba(18, 11, 4, 0.75);
@@ -435,7 +435,7 @@
   font-family: 'Jost', sans-serif;
   font-size: 10px;
   font-weight: 300;
-  color: rgba(240, 235, 224, 0.30);
+  color: rgba(240, 235, 224, 0.55);
   transform: translateY(22px);
   opacity: 0;
   transition:
@@ -503,11 +503,12 @@
     rgba(240, 180, 55, 0.97)
   );
   border: none;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-radius: 6px;
   cursor: pointer;
   transition: filter 0.18s, transform 0.16s;
   flex-shrink: 0;
+  min-height: 44px;
 }
 
 .lansm-card__cart-btn:hover {

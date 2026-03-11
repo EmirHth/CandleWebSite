@@ -38,10 +38,11 @@
   font-family: 'Cormorant Garamond', serif;
   font-weight: 400;
   font-style: italic;
-  font-size: clamp(24px, 3.6vh, 44px);
+  font-size: clamp(20px, 3.6vh, 44px);
   letter-spacing: 0.06em;
   text-transform: none;
   transition: letter-spacing 0.3s ease;
+  min-height: 56px;
 }
 
 .menu__item-link:hover {

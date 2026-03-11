@@ -79,7 +79,7 @@
   font-size: 13px;
   font-weight: 300;
   line-height: 1.85;
-  color: rgba(250, 250, 250, 0.35);
+  color: rgba(250, 250, 250, 0.68);
   margin: 0;
 }
 
@@ -88,7 +88,7 @@
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 0.08em;
-  color: rgba(250, 250, 250, 0.18);
+  color: rgba(250, 250, 250, 0.45);
   margin: 0;
   margin-top: auto;
   padding-top: 20px;
@@ -117,7 +117,7 @@
   font-weight: 600;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: rgba(210, 160, 80, 0.6);
+  color: rgba(210, 160, 80, 0.85);
   margin-bottom: 6px;
 }
 
@@ -126,7 +126,7 @@
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.06em;
-  color: rgba(250, 250, 250, 0.42);
+  color: rgba(250, 250, 250, 0.70);
   text-decoration: none;
   transition: color 0.22s ease;
   width: fit-content;
@@ -204,7 +204,7 @@
   font-weight: 600;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: rgba(250, 250, 250, 0.30);
+  color: rgba(250, 250, 250, 0.60);
 }
 
 .footer__input,

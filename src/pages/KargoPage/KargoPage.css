@@ -45,7 +45,7 @@
   font-family: 'Jost', sans-serif;
   font-size: 15px;
   font-weight: 300;
-  color: rgba(255, 225, 172, 0.40);
+  color: rgba(255, 225, 172, 0.65);
   margin: 0;
 }
 
@@ -92,7 +92,8 @@
 .kargo-table {
   border: 1px solid rgba(255, 215, 100, 0.08);
   border-radius: 12px;
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-bottom: 24px;
 }
 
@@ -145,7 +146,7 @@
   font-family: 'Jost', sans-serif;
   font-size: 13px;
   font-weight: 300;
-  color: rgba(255, 225, 172, 0.40);
+  color: rgba(255, 225, 172, 0.65);
 }
 
 .kargo-note {
@@ -153,7 +154,7 @@
   font-size: 12px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(255, 225, 172, 0.30);
+  color: rgba(255, 225, 172, 0.58);
   border-left: 2px solid rgba(210, 160, 80, 0.25);
   padding-left: 16px;
   margin: 0;
@@ -196,7 +197,7 @@
   font-size: 13px;
   font-weight: 300;
   line-height: 1.8;
-  color: rgba(255, 225, 172, 0.40);
+  color: rgba(255, 225, 172, 0.65);
   margin: 0;
 }
 
@@ -263,7 +264,7 @@
   font-size: 13.5px;
   font-weight: 300;
   line-height: 1.7;
-  color: rgba(255, 225, 172, 0.42);
+  color: rgba(255, 225, 172, 0.68);
   padding-left: 18px;
   position: relative;
 }

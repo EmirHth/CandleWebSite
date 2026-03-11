@@ -556,4 +556,9 @@
   .lp-title {
     font-size: 2.1rem;
   }
+
+  /* iOS zoom engellemek için min 16px */
+  .lp-input {
+    font-size: 16px;
+  }
 }

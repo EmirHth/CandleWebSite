@@ -160,13 +160,16 @@
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 8px 18px;
+  padding: 11px 18px;
   border-radius: 999px;
   border: 1px solid rgba(255, 225, 172, 0.15);
   background: transparent;
   color: rgba(255, 225, 172, 0.6);
   cursor: pointer;
   transition: all 0.25s ease;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .urunler-filter-pill:hover {
@@ -524,6 +527,22 @@
 .urunler-card__info-btn:hover {
   box-shadow: 0 4px 18px rgba(210, 148, 28, 0.45);
   transform: scale(1.04);
+}
+
+/* ── Touch cihazlarda kart bilgisi her zaman görünsün (hover çalışmaz) ── */
+@media (hover: none) {
+  .urunler-card__info {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .urunler-card__info-category,
+  .urunler-card__info-name,
+  .urunler-card__info-subtitle,
+  .urunler-card__info-bottom {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ── Responsive ── */

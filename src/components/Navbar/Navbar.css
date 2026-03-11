@@ -512,8 +512,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   color: rgba(255, 255, 255, 0.9);             /* transparent state */
   transition: background-color 0.18s ease, color 0.35s ease;
@@ -777,13 +777,16 @@
 
 .mobile-menu__footer-link {
   font-family: 'Jost', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(34, 34, 34, 0.6);
+  color: rgba(34, 34, 34, 0.7);
   text-decoration: none;
   transition: color 0.15s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .mobile-menu__footer-link:hover { color: rgb(34, 34, 34); }

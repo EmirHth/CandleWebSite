@@ -43,7 +43,7 @@ export default function NewProducts() {
       <div className="new-products__menu">
         <FlowingMenu
           items={MENU_ITEMS}
-          speed={18}
+          speed={40}
           textColor="rgb(38, 24, 10)"
           bgColor="#ffffff"
           marqueeBgColor="rgb(38, 24, 10)"

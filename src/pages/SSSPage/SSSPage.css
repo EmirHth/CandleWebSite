@@ -46,7 +46,7 @@
   font-size: 14px;
   font-weight: 300;
   line-height: 1.75;
-  color: rgba(255, 225, 172, 0.38);
+  color: rgba(255, 225, 172, 0.68);
   margin: 0;
 }
 
@@ -66,11 +66,14 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 225, 172, 0.45);
+  color: rgba(255, 225, 172, 0.68);
   background: rgba(255, 215, 100, 0.04);
   border: 1px solid rgba(255, 215, 100, 0.10);
   border-radius: 20px;
-  padding: 8px 18px;
+  padding: 11px 18px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   transition: color 0.22s ease, border-color 0.22s ease, background 0.22s ease;
 }
@@ -150,7 +153,7 @@
   font-size: 14px;
   font-weight: 300;
   line-height: 1.9;
-  color: rgba(255, 225, 172, 0.42);
+  color: rgba(255, 225, 172, 0.75);
   padding: 0 0 28px;
   margin: 0;
   max-width: 700px;

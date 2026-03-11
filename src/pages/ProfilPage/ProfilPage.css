@@ -41,6 +41,8 @@
   padding: 24px 18px;
   position: sticky;
   top: 138px;
+  height: fit-content;
+  align-self: start;
 }
 
 .profil-sidebar__avatar-wrap {
@@ -252,7 +254,7 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 225, 172, 0.4);
+  color: rgba(255, 225, 172, 0.65);
 }
 
 .profil-form__input {
@@ -333,7 +335,8 @@
   background: rgba(210, 160, 80, 0.92);
   border: none;
   border-radius: 8px;
-  padding: 13px 32px;
+  padding: 14px 36px;
+  min-height: 44px;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
   white-space: nowrap;

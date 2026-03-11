@@ -16,8 +16,12 @@ const CenterImage = ({ containerRef }) => {
   /* 0 → 0.6 arası tam boyuttan kart boyutuna küçül */
   const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.72])
 
+  /* Scroll başlar başlamaz yazılar bulanıklaşır, 0.35'te 14px'e ulaşır */
+  const blurPx = useTransform(scrollYProgress, [0, 0.35], [0, 14])
+  const textFilter = useTransform(blurPx, v => `blur(${v}px)`)
+
   return (
-    <motion.div className="ssh__center" style={{ scale }}>
+    <motion.div className="ssh__center" style={{ scale, filter: textFilter }}>
       <img
         src="/images/kis-aksami.jpg"
         alt="Laydora Kış Akşamı – Şarap Tonlu Mum"

@@ -309,7 +309,8 @@
   color: rgba(255, 248, 230, 0.95);
   border: 1px solid rgba(255, 200, 100, 0.55);
   background: rgba(10, 6, 2, 0.55);
-  padding: 11px 28px;
+  padding: 13px 28px;
+  min-height: 44px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.22s ease;
@@ -352,7 +353,7 @@
   font-family: 'Jost', sans-serif;
   font-size: 12px;
   font-weight: 300;
-  color: rgba(255, 225, 172, 0.45);
+  color: rgba(255, 225, 172, 0.68);
   margin-bottom: 4px;
 }
 
